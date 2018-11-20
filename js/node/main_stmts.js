@@ -1,9 +1,8 @@
-class Main_stmt {
-  constractor() {
-    this.stmts = [];
-  }
+var Main_stmts = function() {
+  this.type = "main_stmts";
+  this.stmts = [];
+}
 
-  push_stmt(stmt) {
-    this.stmts.push(stmt);
-  }
+Main_stmts.prototype.push_stmt = function(stmt) {
+  this.stmts.push(stmt);
 }

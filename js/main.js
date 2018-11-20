@@ -7,6 +7,7 @@ window.onload = function() {
   game.fps = 60;
 
   game.onload = function() {
+    console.log(main_parser(main_prog));
   }
 
   game.start();
