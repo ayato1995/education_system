@@ -4,7 +4,7 @@ var Func_call = function(id) {
 }
 
 Func_call.prototype.set_func_args = function(index, arg) {
-  this.func_args[i] = arg;
+  this.func_args[index] = arg;
 }
 
 Func_call.prototype.display = function() {

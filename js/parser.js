@@ -11,6 +11,8 @@ function main_parser (prog) {
     var stmts = prog_stack.pop();
     var block = prog[i];
     // console.log(block.type);
+    // console.log(stmts);
+    /*
     if (arg_id != block.get_arg_id()) {
       var call = prog_stack.pop();
       call.set_arg(arg_id, stmts);
@@ -21,6 +23,7 @@ function main_parser (prog) {
       prog_stack.push(stmts);
       stmts = new Func_arg(arg_id);
     }
+    */
     if (block.type == "advance") {
       stmts.push_stmt(new Up());
     } else if (block.type == "rotate_right") {
@@ -47,6 +50,20 @@ function main_parser (prog) {
         stmts = fc;
       } else {
         stmts.push_stmt(fc);
+      }
+    } else if (block.type == "arg_start") {
+      prog_stack.push(stmts);
+      stmts = new Func_arg(block.get_id());
+    } else if (block.type == "arg_end") {
+      args[args.length - 1]--;
+      var fc = prog_stack.pop();
+      fc.set_func_args(stmts.get_id(), stmts);
+      stmts = fc;
+      if (args[args.length - 1] == 0) {
+        args.pop();
+        var s = prog_stack.pop();
+        s.push_stmt(stmts);
+        stmts = s;
       }
     }
     // console.log(stmts);

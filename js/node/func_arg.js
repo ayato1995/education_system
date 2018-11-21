@@ -1,13 +1,19 @@
-var Func_arg = function() {
+var Func_arg = function(id) {
   this.type = "func_arg";
+  this.id = id;
   this.stmts = [];
 }
 
-Func_arg.prototype.push_stmts = function(stmt) {
+Func_arg.prototype.get_id = function() {
+  return this.id;
+}
+
+Func_arg.prototype.push_stmt = function(stmt) {
   this.stmts.push(stmt);
 }
 
 Func_arg.prototype.display = function() {
+  console.log("arg" + this.id);
   for (var i = 0; i < this.stmts.length; i++) {
     this.stmts[i].display();
   }
