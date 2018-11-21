@@ -50,6 +50,9 @@ function main_parser (prog) {
         s.push_stmt(stmts);
         stmts = s;
       }
+    } else {
+      console.log("main error : なんかよくわからんのが入ってるで : " + block.type);
+      return null;
     }
     prog_stack.push(stmts);
   }
@@ -104,6 +107,8 @@ function func_parser (func_prog) {
       } else {
         stmts.push_stmt(fc);
       }
+    } else if (block.type == "param") {
+      stmts.push_stmt(block);
     } else if (block.type == "arg_start") {
       prog_stack.push(stmts);
       stmts = new Func_arg(block.get_id());
@@ -118,6 +123,9 @@ function func_parser (func_prog) {
         s.push_stmt(stmts);
         stmts = s;
       }
+    } else {
+      console.log(func_prog.name + "error : なんかよくわからんのが入ってるで : " + block.type);
+      return null;
     }
     prog_stack.push(stmts);
   }
