@@ -9,6 +9,10 @@ var Terminal_symbol = enchant.Class.create(enchant.Sprite, {
     return this.arg_type;
   },
 
+  set_arg_id: function(id) {
+    this.arg_type = id;
+  },
+
   display: function() {
     console.log(this.type);
   },

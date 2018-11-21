@@ -32,7 +32,7 @@ function main_parser (prog) {
       prog_stack.push(stmts);
       stmts = new Func_call(block.name);
     }
-    console.log(stmts);
+    // console.log(stmts);
     prog_stack.push(stmts);
   }
 
