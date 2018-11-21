@@ -1,8 +1,12 @@
 function main_parser (prog) {
   var prog_stack = [];
   prog_stack.push(new Main_stmts());
+  // arg_id : 現在の命令がどの引数のブロックか知るため
   var arg_id = null;
+  // loopcount : ループのstartとendの対応が取れているか
   var loop_count = 0;
+  // args : 関数呼び出しの引数がいくつかを覚えておく
+  var args = [];
   for (var i = 0; i < prog.length; i++) {
     var stmts = prog_stack.pop();
     var block = prog[i];
@@ -35,9 +39,15 @@ function main_parser (prog) {
       p.push_stmt(stmts);
       stmts = p;
       loop_count--;
-    } else if (block.type == "func_call") {
-      prog_stack.push(stmts);
-      stmts = new Func_call(block.name);
+    } else if (block.type == "func_id") {
+      var fc = new Func_call(block.name);
+      if (block.args != 0) {
+        args.push(block.args);
+        prog_stack.push(stmts);
+        stmts = fc;
+      } else {
+        stmts.push_stmt(fc);
+      }
     }
     // console.log(stmts);
     prog_stack.push(stmts);
@@ -48,6 +58,11 @@ function main_parser (prog) {
     return null;
   }
   return prog_stack.pop();
+  /*
+  var p = prog_stack.pop();
+  console.log(p);
+  return p;
+  */
 }
 
 function func_parser (func_prog) {
