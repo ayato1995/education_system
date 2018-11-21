@@ -27,6 +27,13 @@ Func_arg.prototype.get_stmts_length = function() {
 Func_arg.prototype.display = function() {
   console.log("arg" + this.id);
   for (var i = 0; i < this.stmts.length; i++) {
-    this.stmts[i].display();
+    if (this.stmts[i].type == "main_loop" ||
+      this.stmts[i].type == "func_loop" ||
+      this.stmts[i].type == "main_stmts" ||
+      this.stmts[i].type == "func_stmts") {
+      this.stmts[i].print_stmts();
+    } else {
+      this.stmts[i].display();
+    }
   }
 }

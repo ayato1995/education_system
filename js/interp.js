@@ -17,12 +17,12 @@ var eval = function(state, fm) {
       }
     } else if (current_frame.type == "loop_frame") {
       state.pop_block();
+    current_frame.dec_loop_count();
       console.log(current_frame.get_loop_count());
       if (current_frame.get_loop_count() == 0) {
         state.pop_frame();
         state.frame_top().inc_ip();
       } else {
-        current_frame.dec_loop_count();
         current_frame.reset_ip();
       }
     } else {
@@ -67,11 +67,11 @@ var eval_block = function(frame, state, fm) {
     state.push_block(frame.get_stmt());
     frame.inc_ip();
   } else if (name == "func_call") {
-    console.log("func_call");
+    console.log("func_call : " + stmt.id);
     state.push_block(stmt);
     var stmts = fm.get_func(stmt.id);
     exchang_param_arg(stmts.get_stmts(), stmt.get_args());
-    console.log(stmts.get_stmts());
+    // console.log(stmts.get_stmts());
     state.push_frame(new Func_frame(stmt.id, stmts.get_stmts()));
     frame.inc_ip();
   } else {
@@ -105,6 +105,7 @@ var exchang_param_arg = function(stmts, args) {
       stmts.splice(i, 1);
       for (var j = 0; j < arg.get_stmts_length(); j++) {
         stmts.splice(i, 0, arg.get_stmt(j));
+        i++;
       }
     } else if (stmts[i].type == "func_loop") {
       exchang_param_arg(stmts[i].get_stmts(), args);
