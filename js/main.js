@@ -8,8 +8,15 @@ window.onload = function() {
 
   game.onload = function() {
     var main = main_parser(main_prog);
-    if (main != null)
+    var heart = func_parser(new heart_prog())
+    if (main != null){
+      console.log("main");
       main.print_stmts();
+    }
+    if (heart != null) {
+      console.log(heart.name);
+      heart.print_stmts();
+    }
   }
 
   game.start();
