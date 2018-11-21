@@ -17,7 +17,9 @@ function main_parser (prog) {
       stmts.push_stmt(new Rotate_left());
     } else if (block.type == "loop_start") {
       prog_stack.push(stmts);
-      // block.n = 5;
+      /* ===== test ====== */
+      block.n = 2;
+      /* ================= */
       stmts = new Main_loop(block.n);
       stmts.push_stmt(block);
       loop_count++;

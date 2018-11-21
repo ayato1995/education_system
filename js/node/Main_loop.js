@@ -8,6 +8,14 @@ Main_loop.prototype.push_stmt = function(stmt) {
   this.stmts.push(stmt);
 }
 
+Main_loop.prototype.get_stmts = function() {
+  return this.stmts;
+}
+
+Main_loop.prototype.get_loop_count = function() {
+  return this.n;
+}
+
 Main_loop.prototype.print_stmts = function() {
   console.log(this.type + " : " + this.stmts.length);
   console.log("loop count : " + this.n);
