@@ -1,29 +1,14 @@
 function main_parser (prog) {
   var prog_stack = [];
   prog_stack.push(new Main_stmts());
-  // arg_id : 現在の命令がどの引数のブロックか知るため
-  var arg_id = null;
   // loopcount : ループのstartとendの対応が取れているか
   var loop_count = 0;
   // args : 関数呼び出しの引数がいくつかを覚えておく
   var args = [];
+
   for (var i = 0; i < prog.length; i++) {
     var stmts = prog_stack.pop();
     var block = prog[i];
-    // console.log(block.type);
-    // console.log(stmts);
-    /*
-    if (arg_id != block.get_arg_id()) {
-      var call = prog_stack.pop();
-      call.set_arg(arg_id, stmts);
-      stmts = call;
-    }
-    arg_id = block.get_arg_id();
-    if (arg_id != null) {
-      prog_stack.push(stmts);
-      stmts = new Func_arg(arg_id);
-    }
-    */
     if (block.type == "advance") {
       stmts.push_stmt(new Up());
     } else if (block.type == "rotate_right") {
@@ -66,7 +51,6 @@ function main_parser (prog) {
         stmts = s;
       }
     }
-    // console.log(stmts);
     prog_stack.push(stmts);
   }
 
@@ -85,22 +69,14 @@ function main_parser (prog) {
 function func_parser (func_prog) {
   var prog_stack = [];
   prog_stack.push(new Func_stmts(func_prog.name));
-  var arg_id = null;
-  var prog = func_prog.prog;
+  // loopcount : ループのstartとendの対応が取れているか
   var loop_count = 0;
+  // args : 関数呼び出しの引数がいくつかを覚えておく
+  var args = [];
+  var prog = func_prog.prog;
   for (var i = 0; i < prog.length; i++) {
     var stmts = prog_stack.pop();
-    var block = main_prog[i];
-    if (arg_id != block.get_arg_id()) {
-      var call = prog_stack.pop();
-      call.set_arg(arg_id, stmts);
-      stmts = call;
-    }
-    arg_id = block.get_arg_id();
-    if (arg_id != null) {
-      prog_stack.push(stmts);
-      stmts = new Func_arg(arg_id);
-    }
+    var block = prog[i];
     if (block.type == "advance") {
       stmts.push_stmt(new Up());
     } else if (block.type == "rotate_right") {
@@ -109,16 +85,39 @@ function func_parser (func_prog) {
       stmts.push_stmt(new Rotate_left());
     } else if (block.type == "loop_start") {
       prog_stack.push(stmts);
+      // block.n = 5;
       stmts = new Func_loop(block.n);
+      stmts.push_stmt(block);
       loop_count++;
     } else if (block.type == "loop_end") {
+      stmts.push_stmt(block);
       var p = prog_stack.pop();
       p.push_stmt(stmts);
       stmts = p;
       loop_count--;
-    } else if (block.type == "func_call") {
+    } else if (block.type == "func_id") {
+      var fc = new Func_call(block.name);
+      if (block.args != 0) {
+        args.push(block.args);
+        prog_stack.push(stmts);
+        stmts = fc;
+      } else {
+        stmts.push_stmt(fc);
+      }
+    } else if (block.type == "arg_start") {
       prog_stack.push(stmts);
-      stmts = new Func_call(block.name);
+      stmts = new Func_arg(block.get_id());
+    } else if (block.type == "arg_end") {
+      args[args.length - 1]--;
+      var fc = prog_stack.pop();
+      fc.set_func_args(stmts.get_id(), stmts);
+      stmts = fc;
+      if (args[args.length - 1] == 0) {
+        args.pop();
+        var s = prog_stack.pop();
+        s.push_stmt(stmts);
+        stmts = s;
+      }
     }
     prog_stack.push(stmts);
   }
@@ -128,4 +127,9 @@ function func_parser (func_prog) {
     return null;
   }
   return prog_stack.pop();
+  /*
+  var p = prog_stack.pop();
+  console.log(p);
+  return p;
+  */
 }
