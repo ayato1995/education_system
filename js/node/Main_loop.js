@@ -19,5 +19,4 @@ Main_loop.prototype.print_stmts = function() {
       this.stmts[i].display();
     }
   }
-  console.log("loop end");
 }

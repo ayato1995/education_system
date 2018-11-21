@@ -27,8 +27,10 @@ function main_parser (prog) {
       prog_stack.push(stmts);
       // block.n = 5;
       stmts = new Main_loop(block.n);
+      stmts.push_stmt(block);
       loop_count++;
     } else if (block.type == "loop_end") {
+      stmts.push_stmt(block);
       var p = prog_stack.pop();
       p.push_stmt(stmts);
       stmts = p;
