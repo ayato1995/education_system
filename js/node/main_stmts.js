@@ -8,8 +8,13 @@ Main_stmts.prototype.push_stmt = function(stmt) {
 }
 
 Main_stmts.prototype.print_stmts = function() {
-  console.log(this.stmts.length);
+  console.log(this.type + " : " + this.stmts.length);
   for (var i = 0; i < this.stmts.length; i++) {
-    this.stmts[i].display();
+    if (this.stmts[i].type == "main_loop" ||
+      this.stmts[i].type == "main_stmts") {
+      this.stmts[i].print_stmts();
+    } else {
+      this.stmts[i].display();
+    }
   }
 }

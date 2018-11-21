@@ -8,7 +8,8 @@ window.onload = function() {
 
   game.onload = function() {
     var main = main_parser(main_prog);
-    main.print_stmts();
+    if (main != null)
+      main.print_stmts();
   }
 
   game.start();
