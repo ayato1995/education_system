@@ -72,6 +72,11 @@ var eval_block = function(frame, state, fm) {
     var stmts = fm.get_func(stmt.id);
     exchang_param_arg(stmts.get_stmts(), stmt.get_args());
     // console.log(stmts.get_stmts());
+    /*
+    console.log("tttttttttt");
+    stmts.print_stmts();
+    console.log("tttttttttt");
+    */
     state.push_frame(new Func_frame(stmt.id, stmts.get_stmts()));
     frame.inc_ip();
   } else {
@@ -103,10 +108,12 @@ var exchang_param_arg = function(stmts, args) {
     if (stmts[i].type == "param") {
       var arg = args[stmts[i].id];
       stmts.splice(i, 1);
+      var k = i;
       for (var j = 0; j < arg.get_stmts_length(); j++) {
         stmts.splice(i, 0, arg.get_stmt(j));
         i++;
       }
+      i = k;
     } else if (stmts[i].type == "func_loop") {
       exchang_param_arg(stmts[i].get_stmts(), args);
     } else if (stmts[i] == "func_stmts") {

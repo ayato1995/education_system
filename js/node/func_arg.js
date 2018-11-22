@@ -36,4 +36,5 @@ Func_arg.prototype.display = function() {
       this.stmts[i].display();
     }
   }
+  console.log("end arg" + this.id);
 }
