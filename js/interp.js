@@ -71,39 +71,33 @@ var eval_block = function(frame, state, fm) {
     state.push_block(stmt);
     var stmts = fm.get_func(stmt.id);
     exchang_param_arg(stmts.get_stmts(), stmt.get_args());
-    // console.log(stmts.get_stmts());
-    /*
-    console.log("tttttttttt");
-    stmts.print_stmts();
-    console.log("tttttttttt");
-    */
     state.push_frame(new Func_frame(stmt.id, stmts.get_stmts()));
     frame.inc_ip();
   } else {
-    console.log(name);
+    console.log("else : " + name);
     state.push_block(stmt);
     frame.inc_ip();
   }
 }
 
 var go_forward_player = function(state) {
-  console.log("go_forward_player");
+  // console.log("go_forward_player");
 }
 
 var is_collision = function(state) {
-  console.log("is_collision");
+  // console.log("is_collision");
 }
 
 var rotate_player_right = function(state) {
-  console.log("rotate_player_right");
+  // console.log("rotate_player_right");
 }
 
 var rotate_player_left = function(state) {
-  console.log("rotate_player_left")
+  // console.log("rotate_player_left")
 }
 
 var exchang_param_arg = function(stmts, args) {
-  console.log("exchang_param_arg");
+  // console.log("exchang_param_arg");
   for (var i = 0; i < stmts.length; i++) {
     if (stmts[i].type == "param") {
       var arg = args[stmts[i].id];
@@ -123,6 +117,6 @@ var exchang_param_arg = function(stmts, args) {
 }
 
 var is_clear = function(state) {
-  console.log("is_clear");
+  // console.log("is_clear");
   return true;
 }
