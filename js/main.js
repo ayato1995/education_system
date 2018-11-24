@@ -7,6 +7,12 @@ window.onload = function() {
   game.fps = 60;
 
   game.onload = function() {
+    var blocks = [];
+    blocks.push(new Up());
+    blocks[0].set_block(null, 10, 10, "red");
+    var stage = new Stage();
+    game.pushScene(stage);
+    stage.display_blocks(blocks);
     var fm = new Func_map();
     var main = main_parser(main_prog);
     var heart = func_parser(new heart_prog());
