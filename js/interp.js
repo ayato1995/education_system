@@ -16,8 +16,7 @@ var eval = function(state, fm) {
         return;
       }
     } else if (current_frame.type == "loop_frame") {
-      state.pop_block();
-    current_frame.dec_loop_count();
+      current_frame.dec_loop_count();
       console.log(current_frame.get_loop_count());
       if (current_frame.get_loop_count() == 0) {
         state.pop_frame();
@@ -29,7 +28,6 @@ var eval = function(state, fm) {
       state.pop_frame();
     }
   } else {
-    state.limited_pop_block();
     eval_block(current_frame, state, fm);
   }
   if (state.get_collition_flag) {
@@ -46,36 +44,30 @@ var eval_block = function(frame, state, fm) {
   var name = stmt.type;
   if (name == "advance") {
     console.log("advance");
-    state.push_block(stmt);
     go_forward_player(state);
     is_collision(state);
     frame.inc_ip();
   } else if (name == "rotate_right") {
     console.log("rotate_right");
-    state.push_block(stmt);
     rotate_player_right(state);
     frame.inc_ip();
   } else if (name == "rotate_left") {
     console.log("rotate_left");
-    state.push_block(stmt);
     rotate_player_left(state);
     frame.inc_ip();
   } else if (name == "main_loop" || name == "func_loop") {
     console.log("loop");
     state.push_frame(new Loop_frame(stmt.get_stmts(), stmt.get_loop_count()));
     frame = state.frame_top();
-    state.push_block(frame.get_stmt());
     frame.inc_ip();
   } else if (name == "func_call") {
     console.log("func_call : " + stmt.id);
-    state.push_block(stmt);
     var stmts = fm.get_func(stmt.id);
     exchang_param_arg(stmts.get_stmts(), stmt.get_args());
     state.push_frame(new Func_frame(stmt.id, stmts.get_stmts()));
     frame.inc_ip();
   } else {
     console.log("else : " + name);
-    state.push_block(stmt);
     frame.inc_ip();
   }
 }
