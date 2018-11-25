@@ -51,6 +51,9 @@ var Terminal_symbol = enchant.Class.create(enchant.Sprite, {
   },
 
   move: function(node) {
+    if (node.type == "head") {
+      node = node.next;
+    }
     while (node != null) {
       var prev = node.prev;
       node.x = prev.x;
@@ -84,6 +87,10 @@ var Terminal_symbol = enchant.Class.create(enchant.Sprite, {
       this.next.set_prev(this.prev);
     }
     this.prev.set_next(this.next);
+    var prev = this.prev;
+    this.next = null;
+    this.prev = null;
+    this.move(prev);
   },
 
   /* コンソール出力用 */
@@ -94,6 +101,11 @@ var Terminal_symbol = enchant.Class.create(enchant.Sprite, {
   /* イベントリスナ登録 */
   register_move: function() {
     this.addEventListener("touchmove", function(e) {
+      if (this.prev != null || this.next != null) {
+        if (this.x > this.prev.x + 32 || this.x < this.prev.x) {
+          this.delete();
+        }
+      }
       this.x = e.x;
       this.y = e.y;
     });
@@ -126,4 +138,10 @@ var Terminal_symbol = enchant.Class.create(enchant.Sprite, {
       this.y = this.default_y;
     });
   },
+
+  /* 連結リスト削除用 */
+  register_remove: function(prog) {
+    this.addEventListener("touchend", function(e) {
+    });
+  }
 });

@@ -69,10 +69,7 @@ var Prog = enchant.Class.create({
   },
 
   node_append: function(node, append_node, y) {
-    console.log("test");
-    console.log(y);
     while (node != null) {
-      console.log(node.y);
       if (y <= node.y + 32 + 5 && y >= node.y + 32) {
         node.append(append_node);
         return true;
