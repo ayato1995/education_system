@@ -1,6 +1,7 @@
 var Stage = enchant.Class.create(enchant.Scene, {
   initialize: function() {
     enchant.Scene.call(this);
+    this.blocks = this.set_blocks();
   },
 
   set_blocks: function() {
@@ -11,6 +12,16 @@ var Stage = enchant.Class.create(enchant.Scene, {
     b[1].set_block(null, 10, 47, "red");
     b.push(new Rotate_left());
     b[2].set_block(null, 10, 84, "red");
+    /*
+    var loop = new Group();
+    var start = new Loop_start();
+    start.set_block(null, 10, 121, "blue");
+    var end = new Loop_end();
+    end.set_block(null, 10, 158, "blue");
+    loop.addChild(start);
+    loop.addChild(end);
+    b.push(loop);
+    */
     b.push(new Loop_start());
     b[3].set_block(null, 10, 121, "blue");
     b.push(new Loop_end());
@@ -27,9 +38,9 @@ var Stage = enchant.Class.create(enchant.Scene, {
   },
 
   display_blocks: function() {
-    var blocks = this.set_blocks();
-    for (var i = 0; i < blocks.length; i++) {
-      this.addChild(blocks[i]);
+    // var blocks = this.set_blocks();
+    for (var i = 0; i < this.blocks.length; i++) {
+      this.addChild(this.blocks[i]);
     }
   },
 

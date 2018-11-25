@@ -17,6 +17,7 @@ var Terminal_symbol = enchant.Class.create(enchant.Sprite, {
     this.set_x(x);
     this.set_y(y);
     this.set_backgroundColor(color);
+    this.register_move();
   },
 
   set_image: function(img) {
@@ -44,4 +45,12 @@ var Terminal_symbol = enchant.Class.create(enchant.Sprite, {
   display: function() {
     console.log(this.type);
   },
+
+  /* イベントリスナ登録 */
+  register_move: function() {
+    this.addEventListener("touchmove", function(e) {
+      this.x = e.x;
+      this.y = e.y;
+    });
+  }
 });
