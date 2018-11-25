@@ -9,6 +9,7 @@ window.onload = function() {
   game.onload = function() {
     var stage = new Stage();
     game.pushScene(stage);
+    stage.display_heads();
     stage.display_blocks();
     /*
     var fm = new Func_map();
