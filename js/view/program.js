@@ -33,9 +33,7 @@ var Prog = enchant.Class.create({
   },
 
   is_x_main_head_inside: function(x) {
-    if (x >= this.main_head.x && x <= this.main_head.x + this.main_head.width)
-      return true;
-    return false;
+    return this.x_head_inside(this.main_head, x);
   },
 
   is_y_main_head_inside: function(n, y) {
@@ -43,9 +41,7 @@ var Prog = enchant.Class.create({
   },
 
   is_x_s_head_inside: function(x) {
-    if (x >= this.s_head.x && x <= this.s_head.x + this.s_head.width)
-      return true;
-    return false;
+    return this.x_head_inside(this.s_head, x);
   },
 
   is_y_s_head_inside: function(n, y) {
@@ -53,9 +49,7 @@ var Prog = enchant.Class.create({
   },
 
   is_x_h_head_inside: function(x) {
-    if (x >= this.h_head.x && x <= this.h_head.x + this.h_head.width)
-      return true;
-    return false;
+    return this.x_head_inside(this.h_head, x);
   },
 
   is_y_h_head_inside: function(n, y) {
@@ -63,9 +57,7 @@ var Prog = enchant.Class.create({
   },
 
   is_x_d_head_inside: function(x) {
-    if (x >= this.d_head.x && x <= this.d_head.x + this.d_head.width)
-      return true;
-    return false;
+    return this.x_head_inside(this.d_head, x);
   },
 
   is_y_d_head_inside: function(n, y) {
@@ -73,13 +65,17 @@ var Prog = enchant.Class.create({
   },
 
   is_x_c_head_inside: function(x) {
-    if (x >= this.c_head.x && x <= this.c_head.x + this.c_head.width)
-      return true;
-    return false;
+    return this.x_head_inside(this.c_head, x);
   },
 
   is_y_c_head_inside: function(n, y) {
     return this.node_append(this.c_head, n, y);
+  },
+
+  x_head_inside: function(head, x) {
+    if (x >= head.x - 5 && x <= head.x + head.width + 5)
+      return true;
+    return false;
   },
 
   node_append: function(node, append_node, y) {
