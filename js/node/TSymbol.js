@@ -163,7 +163,6 @@ var Terminal_symbol = enchant.Class.create(enchant.Sprite, {
   register_append: function(stage) {
     this.addEventListener("touchend", function(e) {
       console.log(this.type);
-      //stage.is_touch = true;
       var prog = stage.prog
       if (prog.is_x_main_head_inside(e.x)) {
         if (prog.is_y_main_head_inside(this, e.y)) {
@@ -191,12 +190,6 @@ var Terminal_symbol = enchant.Class.create(enchant.Sprite, {
         }
       }
       stage.removeChild(this);
-    });
-  },
-
-  /* 連結リスト削除用 */
-  register_remove: function(prog) {
-    this.addEventListener("touchend", function(e) {
     });
   },
 });
