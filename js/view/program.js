@@ -2,20 +2,34 @@ var Prog = enchant.Class.create({
   initialize: function() {
     this.main_head = new Terminal_symbol("head");
     this.set_head(this.main_head, 200, 10);
+    this.main_space = this.create_space(this.main_head, this.main_head.width + 10, 300 - (this.main_head.y + this.main_head.height), "gray");
     this.s_head = new Terminal_symbol("head");
-    this.set_head(this.s_head, 240, 10);
+    this.set_head(this.s_head, 245, 10);
+    this.s_space = this.create_space(this.s_head, this.s_head.width + 10, 300 - (this.s_head.y + this.s_head.height), "skyblue");
     this.h_head = new Terminal_symbol("head");
-    this.set_head(this.h_head, 280, 10);
+    this.set_head(this.h_head, 290, 10);
+    this.h_space = this.create_space(this.h_head, this.h_head.width + 10, 300 - (this.h_head.y + this.h_head.height), "skyblue");
     this.d_head = new Terminal_symbol("head");
-    this.set_head(this.d_head, 320, 10);
+    this.set_head(this.d_head, 335, 10);
+    this.d_space = this.create_space(this.d_head, this.d_head.width + 10, 300 - (this.d_head.y + this.d_head.height), "skyblue");
     this.c_head = new Terminal_symbol("head");
-    this.set_head(this.c_head, 360, 10);
+    this.set_head(this.c_head, 380, 10);
+    this.c_space = this.create_space(this.c_head, this.c_head.width + 10, 300 - (this.c_head.y + this.c_head.height), "skyblue");
   },
 
   set_head: function(head, x, y) {
     head.set_x(x);
     head.set_y(y);
     head.set_backgroundColor("yellow");
+  },
+
+  create_space: function(head, height, width, color) {
+    var space = new Sprite(height, width);
+    space.type = "space";
+    space.backgroundColor = color;
+    space.x = head.x - 5;
+    space.y = head.y + head.height;
+    return space;
   },
 
   is_x_main_head_inside: function(x) {
