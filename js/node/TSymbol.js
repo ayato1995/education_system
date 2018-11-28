@@ -73,13 +73,9 @@ var Terminal_symbol = enchant.Class.create(enchant.Sprite, {
   },
 
   delete: function() {
-    // console.log(this);
-    // console.log(this.prev);
     if (this.next != null) {
-      // console.log("tttttttt");
       this.next.set_prev(this.prev);
     }
-    // console.log(this.prev);
     this.prev.set_next(this.next);
     var prev = this.prev;
     this.next = null;
@@ -146,7 +142,10 @@ var Terminal_symbol = enchant.Class.create(enchant.Sprite, {
   register_move: function(stage) {
     this.addEventListener("touchmove", function(e) {
       if (this.prev != null || this.next != null) {
-        this.delete();
+        if (this.x > this.prev.x + this.prev.width + 5 ||
+            this.x < this.prev.x - 5) {
+          this.delete();
+        }
       }
       this.x = e.x;
       this.y = e.y;
