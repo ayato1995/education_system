@@ -80,6 +80,7 @@ var Prog = enchant.Class.create({
 
   node_append: function(node, append_node, y) {
     var keep = node;
+    console.log(append_node.type);
     while (node != null) {
       if (y <= node.y + node.height + 5 && y >= node.y + node.height) {
         node.append(append_node);
@@ -93,6 +94,14 @@ var Prog = enchant.Class.create({
       return true;
     }
     return false;
+  },
+
+  debug: function() {
+    var node = this.main_head;
+    while (node != null) {
+      console.log(node.type);
+      node = node.next;
+    }
   },
 
 });
