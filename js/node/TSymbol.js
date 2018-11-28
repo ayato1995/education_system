@@ -73,13 +73,13 @@ var Terminal_symbol = enchant.Class.create(enchant.Sprite, {
   },
 
   delete: function() {
-    console.log(this);
-    console.log(this.prev);
+    // console.log(this);
+    // console.log(this.prev);
     if (this.next != null) {
-      console.log("tttttttt");
+      // console.log("tttttttt");
       this.next.set_prev(this.prev);
     }
-    console.log(this.prev);
+    // console.log(this.prev);
     this.prev.set_next(this.next);
     var prev = this.prev;
     this.next = null;
@@ -98,15 +98,10 @@ var Terminal_symbol = enchant.Class.create(enchant.Sprite, {
     this.addEventListener("touchmove", function(e) {
       var node = this.node;
       if (stage.is_touch) {
-        node = this.create_block(stage);
+        node = this.create_block(stage, e.x, e.y);
         stage.addChild(node);
         this.node = node;
         stage.is_touch = false;
-      }
-      if (node.prev != null || node.next != null) {
-        if (node.x > node.prev.x + 32 || node.x < node.prev.x) {
-          node.delete();
-        }
       }
       node.x = e.x;
       node.y = e.y;
@@ -116,7 +111,7 @@ var Terminal_symbol = enchant.Class.create(enchant.Sprite, {
   /* 作成したブロックを追加するためのイベント */
   register_init_block_append: function(stage) {
     this.addEventListener("touchend", function(e) {
-      console.log(this.node.type);
+      console.log("init_block_append : " + this.node.type);
       stage.is_touch = true;
       var prog = stage.prog
       if (prog.is_x_main_head_inside(e.x)) {
@@ -162,7 +157,7 @@ var Terminal_symbol = enchant.Class.create(enchant.Sprite, {
   /* 連結リスト挿入用 */
   register_append: function(stage) {
     this.addEventListener("touchend", function(e) {
-      console.log(this.type);
+      console.log("appen : " + this.type);
       var prog = stage.prog
       if (prog.is_x_main_head_inside(e.x)) {
         if (prog.is_y_main_head_inside(this, e.y)) {

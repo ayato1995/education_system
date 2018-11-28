@@ -4,7 +4,7 @@ var Rotate_right = enchant.Class.create(Terminal_symbol, {
   },
 
   create_block: function(stage, x, y) {
-    var rr = new Up();
+    var rr = new Rotate_right();
     rr.set_image(this.image);
     rr.set_x(x);
     rr.set_y(y);
