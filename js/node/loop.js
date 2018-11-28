@@ -3,24 +3,43 @@ var Loop = enchant.Class.create(enchant.Sprite, {
     enchant.Sprite.call(this, 32, 32 * 2 + 5);
     this.x;
     this.y;
-    this.default_x;
-    this.default_y;
     this.start = new Loop_start();
-    // this.start.set_block(start_img, 10, 121, "blue");
     this.end = new Loop_end();
-    // this.end.set_block(end_img, 10, 158, "blue");
     this.height = this.start.height + this.end.height + 5;
     this.backgroundColor = "orange";
   },
 
-  set_block: function(start_img, end_img, x, y, prog) {
-    this.default_x = x;
-    this.default_y = y;
+  create_block: function(stage, x, y, loop) {
+    var l = new Loop();
+    l.x = x;
+    l.y = y;
+    l.start.create_block(loop, stage);
+    l.end.create_block(loop, stage);
+    return l;
+  },
+
+  set_block: function(start_img, end_img, x, y, stage) {
     this.x = x;
     this.y = y;
-    this.start.set_block(null, this.x, this.default_y, "blue", prog, this, this.end);
-    this.end.set_block(null, this.x, this.default_y + this.start.height + 5, "blue", prog, this, this.start);
+    this.start.set_block(start_img, this.x, this.y, "blue", stage, this, this.end);
+    this.end.set_block(start_img, this.x, this.y + this.start.height + 5, "blue", stage, this, this.start);
     // this.register_move();
+  },
+
+  get_start_prev: function() {
+    return this.start.prev;
+  },
+
+  get_start_next: function() {
+    return this.start.next;
+  },
+
+  get_end_prev: function() {
+    return this.end.prev;
+  },
+
+  get_end_next: function() {
+    return this.end.next;
   },
 
   loop_addChild: function(stage) {

@@ -3,22 +3,106 @@ var Loop_end = enchant.Class.create(Terminal_symbol, {
     Terminal_symbol.call(this, "loop_end");
   },
 
-  set_block: function(img, x, y, color, prog, loop, start) {
-    this.set_image(img);
-    this.set_x(x);
-    this.set_default_x(x);
-    this.set_y(y);
-    this.set_default_y(y);
-    this.set_backgroundColor(color);
-    this.register_move(loop, start);
-    this.register_append(prog, loop, start);
+  create_block: function(loop, stage) {
+    this.set_image(loop.end.image);
+    this.set_x(loop.end.x);
+    this.set_y(loop.y + loop.height - this.height);
+    this.set_backgroundColor(loop.end.backgroundColor);
+    this.register_move(stage, loop, loop.start);
+    this.register_append(stage, loop, loop.start);
   },
 
-  register_move: function(loop, start) {
+  set_block: function(img, x, y, color, stage, loop, start) {
+    this.set_image(img);
+    this.set_x(x);
+    this.set_y(y);
+    this.set_backgroundColor(color);
+    this.register_init_move(stage, loop);
+    this.register_init_append(stage);
+  },
+
+  register_init_move: function(stage, loop) {
     this.addEventListener("touchmove", function(e) {
+      var node = this.node;
+      if (stage.is_touch) {
+        node = loop.create_block(stage, e.x, e.y, loop);
+        stage.addChild(node);
+        stage.addChild(node.start);
+        stage.addChild(node.end);
+        this.node = node;
+        stage.is_touch = false;
+      }
+      node.x = e.x;
+      node.y = e.y - this.height - 5;
+      node.start.x = e.x;
+      node.start.y = e.y - this.height - 5;
+      node.end.x = e.x;
+      node.end.y = e.y;
+    });
+  },
+
+  register_init_append: function(stage) {
+    this.addEventListener("touchend", function(e) {
+      console.log("init_block_append : " + this.node.end.type);
+      stage.is_touch = true;
+      var prog = stage.prog;
+      if (prog.is_x_main_head_inside(e.x)) {
+        if (prog.is_y_main_head_inside(this.node.start, e.y) &&
+            prog.is_y_main_head_inside(this.node.end, e.y)) {
+          this.node.x = this.node.start.x;
+          this.node.y = this.node.start.y;
+          return true;
+        }
+      }
+      if (prog.is_x_s_head_inside(e.x)) {
+        if (prog.is_y_s_head_inside(this.node.start, e.y) &&
+            prog.is_y_s_head_inside(this.node.end, e.y)) {
+          this.node.x = this.node.start.x;
+          this.node.y = this.node.start.y;
+          return true;
+        }
+      }
+      if (prog.is_x_h_head_inside(e.x)) {
+        if (prog.is_y_h_head_inside(this.node.start, e.y) &&
+            prog.is_y_h_head_inside(this.node.end, e.y)) {
+          this.node.x = this.node.start.x;
+          this.node.y = this.node.start.y;
+          return true;
+        }
+      }
+      if (prog.is_x_d_head_inside(e.x)) {
+        if (prog.is_y_d_head_inside(this.node.start, e.y) &&
+            prog.is_y_d_head_inside(this.node.end, e.y)) {
+          this.node.x = this.node.start.x;
+          this.node.y = this.node.start.y;
+          return true;
+        }
+      }
+      if (prog.is_x_c_head_inside(e.x)) {
+        if (prog.is_y_c_head_inside(this.node.start, e.y) &&
+            prog.is_y_c_head_inside(this.node.end, e.y)) {
+          this.node.x = this.node.start.x;
+          this.node.y = this.node.start.y;
+          return true;
+        }
+      }
+
+      stage.removeChild(this.node);
+      stage.removeChild(this.node.start);
+      stage.removeChild(this.node.end);
+    });
+  },
+
+  register_move: function(stage, loop, start) {
+    this.addEventListener("touchmove", function(e) {
+      if (start == this.prev) console.log("true");
       if (this.prev != null || this.next != null) {
+        console.log("delete");
         if (this.x > this.prev.x + 32 || this.x < this.prev.x)  {
+          console.log("delete : loop, start");
+          start.delete();
           this.delete();
+          console.log("コンンプリート");
         }
       }
       this.x = e.x;
@@ -30,54 +114,52 @@ var Loop_end = enchant.Class.create(Terminal_symbol, {
     });
   },
 
-  register_append: function(prog, loop, start) {
+  register_append: function(stage, loop, start) {
     this.addEventListener("touchend", function(e) {
+      var prog = stage.prog;
       if (prog.is_x_main_head_inside(e.x)) {
         if (prog.is_y_main_head_inside(start, e.y) &&
             prog.is_y_main_head_inside(this, e.y)) {
-          loop.x = this.x;
-          loop.y = this.y;
+          loop.x = start.x;
+          loop.y = start.y;
           return true;
         }
       }
       if (prog.is_x_s_head_inside(e.x)) {
         if (prog.is_y_s_head_inside(start, e.y) &&
             prog.is_y_s_head_inside(this, e.y)) {
-          loop.x = this.x;
-          loop.y = this.y;
+          loop.x = start.x;
+          loop.y = start.y;
           return true;
         }
       }
       if (prog.is_x_h_head_inside(e.x)) {
         if (prog.is_y_h_head_inside(start, e.y) &&
             prog.is_y_h_head_inside(this, e.y)) {
-          loop.x = this.x;
-          loop.y = this.y;
+          loop.x = start.x;
+          loop.y = start.y;
           return true;
         }
       }
       if (prog.is_x_d_head_inside(e.x)) {
         if (prog.is_y_d_head_inside(start, e.y) &&
             prog.is_y_d_head_inside(this, e.y)) {
-          loop.x = this.x;
-          loop.y = this.y;
+          loop.x = start.x;
+          loop.y = start.y;
           return true;
         }
       }
       if (prog.is_x_c_head_inside(e.x)) {
         if (prog.is_y_c_head_inside(start, e.y) &&
             prog.is_y_c_head_inside(this, e.y)) {
-          loop.x = this.x;
-          loop.y = this.y;
+          loop.x = start.x;
+          loop.y = start.y;
           return true;
         }
       }
-      this.x = this.default_x;
-      this.y = this.default_y;
-      loop.x = loop.default_x;
-      loop.y = loop.default_y;
-      start.x = start.default_x;
-      start.y = start.default_y;
+      stage.removeChild(this);
+      stage.removeChild(loop);
+      stage.removeChild(start);
     });
   }
 
