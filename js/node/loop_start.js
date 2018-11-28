@@ -4,14 +4,14 @@ var Loop_start = enchant.Class.create(Terminal_symbol, {
     this.n = 0;
   },
 
-  create_block: function(loop, stage) {
+  create_block: function(new_loop, loop, stage) {
     this.set_image(loop.start.image);
     this.set_x(loop.start.x);
-    this.set_y(loop.y);
+    this.set_y(loop.start.y);
     this.set_n(loop.start.n);
     this.set_backgroundColor(loop.start.backgroundColor);
-    this.register_move(stage, loop, loop.end);
-    this.register_append(stage, loop, loop.end);
+    this.register_move(stage, new_loop, new_loop.end);
+    this.register_append(stage, new_loop, new_loop.end);
   },
 
   set_block: function(img, x, y, color, stage, loop, end) {
@@ -57,40 +57,36 @@ var Loop_start = enchant.Class.create(Terminal_symbol, {
       stage.is_touch = true;
       var prog = stage.prog;
       if (prog.is_x_main_head_inside(e.x)) {
-        if (prog.is_y_main_head_inside(this.node.start, e.y) &&
-            prog.is_y_main_head_inside(this.node.end, e.y)) {
+        if (this.node.is_y_main_head_inside(prog, e.y)) {
+          // prog.debug()
           this.node.x = this.node.start.x;
           this.node.y = this.node.start.y;
           return true;
         }
       }
       if (prog.is_x_s_head_inside(e.x)) {
-        if (prog.is_y_s_head_inside(this.node.start, e.y) &&
-            prog.is_y_s_head_inside(this.node.end, e.y)) {
+        if (this.node.is_y_s_head_inside(prog, e.y)) {
           this.node.x = this.node.start.x;
           this.node.y = this.node.start.y;
           return true;
         }
       }
       if (prog.is_x_h_head_inside(e.x)) {
-        if (prog.is_y_h_head_inside(this.node.start, e.y) &&
-            prog.is_y_h_head_inside(this.node.end, e.y)) {
+        if (this.node.is_y_h_head_inside(prog, e.y)) {
           this.node.x = this.node.start.x;
           this.node.y = this.node.start.y;
           return true;
         }
       }
       if (prog.is_x_d_head_inside(e.x)) {
-        if (prog.is_y_d_head_inside(this.node.start, e.y) &&
-            prog.is_y_d_head_inside(this.node.end, e.y)) {
+        if (this.node.is_y_d_head_inside(prog, e.y)) {
           this.node.x = this.node.start.x;
           this.node.y = this.node.start.y;
           return true;
         }
       }
       if (prog.is_x_c_head_inside(e.x)) {
-        if (prog.is_y_c_head_inside(this.node.start, e.y) &&
-            prog.is_y_c_head_inside(this.node.end, e.y)) {
+        if (this.node.is_y_c_head_inside(prog, e.y)) {
           this.node.x = this.node.start.x;
           this.node.y = this.node.start.y;
           return true;
@@ -105,10 +101,16 @@ var Loop_start = enchant.Class.create(Terminal_symbol, {
 
   register_move: function(stage, loop, end) {
     this.addEventListener("touchmove", function(e) {
-      if (this.prev != null || this.next != null) {
-        if (this.x > this.prev.x + 32 || this.x < this.prev.x)  {
-          this.delete();
-          end.delete();
+      if (this.is_touch) {
+        if (this.prev != null || this.next != null) {
+          if (this.x > this.prev.x + this.prev.width + 5 ||
+              this.x < this.prev.x - 5) {
+            this.delete();
+            console.log("start seiko");
+            stage.prog.debug();
+            end.delete();
+            this.is_touch = false;
+          }
         }
       }
       this.x = e.x;
@@ -122,61 +124,66 @@ var Loop_start = enchant.Class.create(Terminal_symbol, {
 
   register_append: function(stage, prog, loop, end) {
     this.addEventListener("touchend", function(e) {
-      console.log("tetete");
       var prog = stage.prog;
+      this.is_touch = true;
       if (prog.is_x_main_head_inside(e.x)) {
-        console.log("test");
-        /*
-        if (prog.is_y_main_head_inside(this, e.y) &&
-            prog.is_y_main_head_inside(end, e.y)) {
-              */
-          if (prog.is_y_main_head_inside(this, e.y)) {
-            console.log("testttt");
-            if (prog.is_y_main_head_inside(end, e.y)) {
-
-          console.log("t");
-          loop.x = this.x;
-          loop.y = this.y;
-          return true;
-            }
+        if (prog.is_y_main_head_inside(this, e.y)) {
+          if (!prog.is_y_main_head_inside(end, e.y)) {
+            this.delete();
+          } else {
+            loop.x = this.x;
+            loop.y = this.y;
+            return true;
           }
         }
+      }
       if (prog.is_x_s_head_inside(e.x)) {
-        if (prog.is_y_s_head_inside(this, e.y) &&
-            prog.is_y_s_head_inside(end, e.y)) {
-          loop.x = this.x;
-          loop.y = this.y;
-          return true;
+        if (prog.is_y_s_head_inside(this, e.y)) {
+          if (!prog.is_y_s_head_inside(end, e.y)) {
+            this.delete();
+          } else {
+            loop.x = this.x;
+            loop.y = this.y;
+            return true;
+          }
         }
       }
       if (prog.is_x_h_head_inside(e.x)) {
-        if (prog.is_y_h_head_inside(this, e.y) &&
-            prog.is_y_h_head_inside(end, e.y)) {
-          loop.x = this.x;
-          loop.y = this.y;
-          return true;
+        if (prog.is_y_h_head_inside(this, e.y)) {
+          if (!prog.is_y_h_head_inside(end, e.y)) {
+            this.delete();
+          } else {
+            loop.x = this.x;
+            loop.y = this.y;
+            return true;
+          }
         }
       }
       if (prog.is_x_d_head_inside(e.x)) {
-        if (prog.is_y_d_head_inside(this, e.y) &&
-            prog.is_y_d_head_inside(end, e.y)) {
-          loop.x = this.x;
-          loop.y = this.y;
-          return true;
+        if (prog.is_y_d_head_inside(this, e.y)) {
+          if (!prog.is_y_d_head_inside(end, e.y)) {
+            this.delete();
+          } else {
+            loop.x = this.x;
+            loop.y = this.y;
+            return true;
+          }
         }
       }
       if (prog.is_x_c_head_inside(e.x)) {
-        if (prog.is_y_c_head_inside(this, e.y) &&
-            prog.is_y_c_head_inside(end, e.y)) {
-          loop.x = this.x;
-          loop.y = this.y;
-          return true;
+        if (prog.is_y_c_head_inside(this, e.y)) {
+          if (!prog.is_y_c_head_inside(end, e.y)) {
+            this.delete();
+          } else {
+            loop.x = this.x;
+            loop.y = this.y;
+            return true;
+          }
         }
       }
-
       stage.removeChild(this);
       stage.removeChild(loop);
       stage.removeChild(end);
-    })
+    });
   }
 });

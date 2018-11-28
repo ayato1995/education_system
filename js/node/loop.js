@@ -7,14 +7,16 @@ var Loop = enchant.Class.create(enchant.Sprite, {
     this.end = new Loop_end();
     this.height = this.start.height + this.end.height + 5;
     this.backgroundColor = "orange";
+    // is_touch : ブロックを削除するタイミングを管理
+    this.is_touch = true;
   },
 
   create_block: function(stage, x, y, loop) {
     var l = new Loop();
     l.x = x;
     l.y = y;
-    l.start.create_block(loop, stage);
-    l.end.create_block(loop, stage);
+    l.start.create_block(this, loop, stage);
+    l.end.create_block(this, loop, stage);
     return l;
   },
 
@@ -22,7 +24,7 @@ var Loop = enchant.Class.create(enchant.Sprite, {
     this.x = x;
     this.y = y;
     this.start.set_block(start_img, this.x, this.y, "blue", stage, this, this.end);
-    this.end.set_block(start_img, this.x, this.y + this.start.height + 5, "blue", stage, this, this.start);
+    this.end.set_block(start_img, this.x, this.y + this.start.height + 5, "yellow", stage, this, this.start);
     // this.register_move();
   },
 
@@ -40,6 +42,77 @@ var Loop = enchant.Class.create(enchant.Sprite, {
 
   get_end_next: function() {
     return this.end.next;
+  },
+
+  delete: function() {
+    this.start.delete();
+    this.end.delete();
+  },
+
+  is_y_main_head_inside: function(prog, y) {
+    var flag = prog.is_y_main_head_inside(this.start, y);
+    console.log(flag);
+    if (flag) {
+      console.log(flag);
+      if (prog.is_y_main_head_inside(this.end, y + this.start.height + 5))
+        return true;
+      else {
+        this.start.delete();
+      }
+    }
+    return false;
+  },
+
+  is_y_s_head_inside: function(prog, y) {
+    var flag = prog.is_y_sain_head_inside(this.start, y);
+    if (flag) {
+      console.log(flag);
+      if (prog.is_y_sain_head_inside(this.end, y + this.start.height + 5))
+        return true;
+      else {
+        this.start.delete();
+      }
+    }
+    return false;
+  },
+
+  is_y_h_head_inside: function(prog, y) {
+    var flag = prog.is_y_h_head_inside(this.start, y);
+    if (flag) {
+      console.log(flag);
+      if (prog.is_y_h_head_inside(this.end, y + this.start.height + 5))
+        return true;
+      else {
+        this.start.delete();
+      }
+    }
+    return false;
+  },
+
+  is_y_d_head_inside: function(prog, y) {
+    var flag = prog.is_y_d_head_inside(this.start, y);
+    if (flag) {
+      console.log(flag);
+      if (prog.is_y_d_head_inside(this.end, y + this.start.height + 5))
+        return true;
+      else {
+        this.start.delete();
+      }
+    }
+    return false;
+  },
+
+  is_y_c_head_inside: function(prog, y) {
+    var flag = prog.is_y_c_head_inside(this.start, y);
+    if (flag) {
+      console.log(flag);
+      if (prog.is_y_c_head_inside(this.end, y + this.start.height + 5))
+        return true;
+      else {
+        this.start.delete();
+      }
+    }
+    return false;
   },
 
   loop_addChild: function(stage) {
