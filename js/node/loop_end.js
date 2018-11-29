@@ -83,6 +83,7 @@ var Loop_end = enchant.Class.create(Terminal_symbol, {
       stage.removeChild(this.node);
       stage.removeChild(this.node.start);
       stage.removeChild(this.node.end);
+      return false;
     });
   },
 

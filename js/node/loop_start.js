@@ -90,10 +90,10 @@ var Loop_start = enchant.Class.create(Terminal_symbol, {
           return true;
         }
       }
-
       stage.removeChild(this.node);
       stage.removeChild(this.node.start);
       stage.removeChild(this.node.end);
+      return false;
     });
   },
 

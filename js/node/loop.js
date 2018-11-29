@@ -60,8 +60,8 @@ var Loop = enchant.Class.create(enchant.Sprite, {
     var prev = node.prev;
     var next = node.next;
     if (prev != null && next != null) {
-      if (node.type == "loop_start") {
-        if (next.type == "loop_end") {
+      if (node.type == "loop_start" && next.type == "loop_end") {
+        if (next.next != null) {
           next = next.next;
         }
       }
@@ -74,7 +74,8 @@ var Loop = enchant.Class.create(enchant.Sprite, {
         this.delete(node, prev);
         return true;
       }
-    } else if (prev != null) {
+    }
+    if (prev != null) {
       if (e.x > prev.x + prev.width + 5 ||
           e.x < prev.x - 5) {
         this.delete(node, prev);
@@ -90,8 +91,6 @@ var Loop = enchant.Class.create(enchant.Sprite, {
     var prog = stage.prog;
     var start = this.start;
     var end = this.end;
-    console.log(start.y);
-    console.log(end.y);
     if (prog.is_x_main_head_inside(e.x)) {
       if (prog.is_y_main_head_inside(start, start.y)) {
         if (!prog.is_y_main_head_inside(end, end.y)) {
@@ -161,9 +160,7 @@ var Loop = enchant.Class.create(enchant.Sprite, {
 
   is_y_main_head_inside: function(prog, y) {
     var flag = prog.is_y_main_head_inside(this.start, y);
-    // console.log(flag);
     if (flag) {
-      // console.log(flag);
       if (prog.is_y_main_head_inside(this.end, y + this.start.height + 5)) {
         return true;
       } else {
