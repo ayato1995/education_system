@@ -143,15 +143,6 @@ var Terminal_symbol = enchant.Class.create(enchant.Sprite, {
 
   register_move: function(stage) {
     this.addEventListener("touchmove", function(e) {
-      if (this.is_touch) {
-        if (this.prev != null || this.next != null) {
-          if (this.x > this.prev.x + this.prev.width + 5 ||
-              this.x < this.prev.x - 5) {
-            this.delete();
-            this.is_touch = false;
-          }
-        }
-      }
       this.x = e.x;
       this.y = e.y;
     })
@@ -162,8 +153,22 @@ var Terminal_symbol = enchant.Class.create(enchant.Sprite, {
   register_append: function(stage) {
     this.addEventListener("touchend", function(e) {
       console.log("appen : " + this.type);
-      var prog = stage.prog
-      this.is_touch = true;
+      var prog = stage.prog;
+      if (this.prev != null && this.next != null) {
+        if (e.x > this.prev.x + this.prev.width + 5 ||
+            e.x < this.prev.x - 5 || e.y < this.prev.y ||
+            e.y > this.next.y + this.next.height) {
+          this.delete();
+        }
+      } else if (this.prev != null) {
+        if (e.x > this.prev.x + this.prev.width + 5 ||
+            e.x < this.prev.x - 5) {
+          this.delete();
+        }
+      } else {
+        this.move(this);
+        return false;
+      }
       if (prog.is_x_main_head_inside(e.x)) {
         if (prog.is_y_main_head_inside(this, e.y)) {
           return true;
