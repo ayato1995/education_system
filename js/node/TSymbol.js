@@ -46,12 +46,21 @@ var Terminal_symbol = enchant.Class.create(enchant.Sprite, {
     if (node.type == "head") {
       node = node.next;
     }
+    var i = 0;
     while (node != null) {
+      // console.log(node.type);
+      // console.log(node.prev.type);
       var prev = node.prev;
       node.x = prev.x;
       node.y = prev.y + prev.height + 5;
       node = node.next;
+      i++;
+      if (i == 5) {
+        console.log("looooooooooooop");
+        break;
+      }
     }
+    // console.log("move end");
   },
 
   /* 連結リスト */
@@ -71,7 +80,7 @@ var Terminal_symbol = enchant.Class.create(enchant.Sprite, {
     }
     this.set_next(node);
     this.next.set_prev(this);
-    this.move(node);
+    // this.move(node);
   },
 
   delete: function() {
@@ -82,7 +91,7 @@ var Terminal_symbol = enchant.Class.create(enchant.Sprite, {
     var prev = this.prev;
     this.next = null;
     this.prev = null;
-    this.move(prev);
+    // this.move(prev);
   },
 
   /* コンソール出力用 */
@@ -114,6 +123,7 @@ var Terminal_symbol = enchant.Class.create(enchant.Sprite, {
       var prog = stage.prog
       if (prog.is_x_main_head_inside(e.x)) {
         if (prog.is_y_main_head_inside(this.node, e.y)) {
+          console.log("ddd");
           return true;
         }
       }
@@ -158,12 +168,16 @@ var Terminal_symbol = enchant.Class.create(enchant.Sprite, {
         if (e.x > this.prev.x + this.prev.width + 5 ||
             e.x < this.prev.x - 5 || e.y < this.prev.y ||
             e.y > this.next.y + this.next.height) {
+          var prev = this.prev;
           this.delete();
+          this.move(prev);
         }
       } else if (this.prev != null) {
         if (e.x > this.prev.x + this.prev.width + 5 ||
             e.x < this.prev.x - 5) {
+          var prev = this.prev;
           this.delete();
+          this.move(prev);
         }
       } else {
         this.move(this);

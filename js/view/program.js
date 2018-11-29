@@ -80,10 +80,11 @@ var Prog = enchant.Class.create({
 
   node_append: function(node, append_node, y) {
     var keep = node;
-    // console.log(append_node.type);
+    // console.log(append_node);
     while (node != null) {
       if (y <= node.y + node.height + 5 && y >= node.y + node.height) {
         node.append(append_node);
+        node.move(append_node);
         return true;
       }
       keep = node;
@@ -91,6 +92,7 @@ var Prog = enchant.Class.create({
     }
     if (y >= keep.y + keep.height && y <= 300) {
       keep.append(append_node);
+      keep.move(append_node);
       return true;
     }
     return false;
