@@ -8,8 +8,8 @@ var Loop = enchant.Class.create(enchant.Sprite, {
     this.height = this.start.height + this.end.height + 5;
     this.backgroundColor = "orange";
     this.register_height();
-    // is_touch : ブロックを削除するタイミングを管理
-    this.is_touch = true;
+    // 異動前のブロックのy座標を保存
+    this.keep_y
   },
 
   create_block: function(stage, x, y, loop) {
@@ -32,7 +32,6 @@ var Loop = enchant.Class.create(enchant.Sprite, {
     this.y = y;
     this.start.set_block(start_img, this.x, this.y, "blue", stage, this, this.end);
     this.end.set_block(start_img, this.x, this.y + this.start.height + 5, "yellow", stage, this, this.start);
-    // this.register_move();
   },
 
   get_start_prev: function() {
@@ -59,8 +58,13 @@ var Loop = enchant.Class.create(enchant.Sprite, {
 
   most_above: function(stage) {
     stage.addChild(this.start);
-    stage.addChild(this);
     stage.addChild(this.end);
+  },
+
+  remove_block: function(stage) {
+    stage.removeChild(this);
+    stage.removeChild(this.start);
+    stage.removeChild(this.end);
   },
 
   loop_delete: function(node, e) {
@@ -73,9 +77,6 @@ var Loop = enchant.Class.create(enchant.Sprite, {
           next = next.next;
         }
       }
-      // console.log(e.x + " " + e.y);
-      // console.log((prev.x + prev.width + 5) + " " + (prev.x - 5) + " "
-      //   + " " + (prev.y) + " " + (next.y + next.height));
       if (e.x > prev.x + prev.width + 5 ||
           e.x < prev.x - 5 || e.y < prev.y ||
           e.y > next.y + next.height) {
@@ -85,7 +86,7 @@ var Loop = enchant.Class.create(enchant.Sprite, {
     }
     if (prev != null) {
       if (e.x > prev.x + prev.width + 5 ||
-          e.x < prev.x - 5) {
+          e.x < prev.x - 5 || e.y < prev.y) {
         this.delete(node, prev);
         return true;
       }
@@ -99,9 +100,15 @@ var Loop = enchant.Class.create(enchant.Sprite, {
     var prog = stage.prog;
     var start = this.start;
     var end = this.end;
+    var start_y = start.y;
+    var end_y = end.y;
+    if (this.keep_y < this.y) {
+      start_y = start.y - (start.height + 5) * 2;
+      end_y = end.y - (end.height + 5) * 2;
+    }
     if (prog.is_x_main_head_inside(e.x)) {
-      if (prog.is_y_main_head_inside(start, start.y)) {
-        if (!prog.is_y_main_head_inside(end, end.y)) {
+      if (prog.is_y_main_head_inside(start, start_y)) {
+        if (!prog.is_y_main_head_inside(end, end_y)) {
           var prev = start.prev;
           start.delete();
           start.move(prev);
@@ -113,8 +120,8 @@ var Loop = enchant.Class.create(enchant.Sprite, {
       }
     }
     if (prog.is_x_s_head_inside(e.x)) {
-      if (prog.is_y_s_head_inside(start, start.y)) {
-        if (!prog.is_y_s_head_inside(end, end.y)) {
+      if (prog.is_y_s_head_inside(start, start_y)) {
+        if (!prog.is_y_s_head_inside(end, end_y)) {
           var prev = node.prev;
           start.delete();
           start.move(prev);
@@ -126,8 +133,8 @@ var Loop = enchant.Class.create(enchant.Sprite, {
       }
     }
     if (prog.is_x_h_head_inside(e.x)) {
-      if (prog.is_y_h_head_inside(start, start.y)) {
-        if (!prog.is_y_h_head_inside(end, end.y)) {
+      if (prog.is_y_h_head_inside(start, start_y)) {
+        if (!prog.is_y_h_head_inside(end, end_y)) {
           var prev = node.prev;
           start.delete();
           start.move(prev);
@@ -139,8 +146,8 @@ var Loop = enchant.Class.create(enchant.Sprite, {
       }
     }
     if (prog.is_x_d_head_inside(e.x)) {
-      if (prog.is_y_d_head_inside(start, start.y)) {
-        if (!prog.is_y_d_head_inside(end, end.y)) {
+      if (prog.is_y_d_head_inside(start, start_y)) {
+        if (!prog.is_y_d_head_inside(end, end_y)) {
           var prev = node.prev;
           start.delete();
           start.move(prev);
@@ -152,8 +159,8 @@ var Loop = enchant.Class.create(enchant.Sprite, {
       }
     }
     if (prog.is_x_c_head_inside(e.x)) {
-      if (prog.is_y_c_head_inside(start, start.y)) {
-        if (!prog.is_y_c_head_inside(end, end.y)) {
+      if (prog.is_y_c_head_inside(start, start_y)) {
+        if (!prog.is_y_c_head_inside(end, end_y)) {
           var prev = node.prev;
           start.delete();
           start.move(prev);
@@ -185,7 +192,6 @@ var Loop = enchant.Class.create(enchant.Sprite, {
       if (prog.is_y_s_head_inside(this.end, y + this.start.height + 5))
         return true;
       else {
-        console.log("fff");
         this.start.delete();
       }
     }
@@ -199,7 +205,6 @@ var Loop = enchant.Class.create(enchant.Sprite, {
       if (prog.is_y_h_head_inside(this.end, y + this.start.height + 5))
         return true;
       else {
-        console.log("fff");
         this.start.delete();
       }
     }
@@ -213,7 +218,6 @@ var Loop = enchant.Class.create(enchant.Sprite, {
       if (prog.is_y_d_head_inside(this.end, y + this.start.height + 5))
         return true;
       else {
-        console.log("fff");
         this.start.delete();
       }
     }
