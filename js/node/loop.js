@@ -7,6 +7,7 @@ var Loop = enchant.Class.create(enchant.Sprite, {
     this.end = new Loop_end();
     this.height = this.start.height + this.end.height + 5;
     this.backgroundColor = "orange";
+    this.register_height();
     // is_touch : ブロックを削除するタイミングを管理
     this.is_touch = true;
   },
@@ -58,9 +59,9 @@ var Loop = enchant.Class.create(enchant.Sprite, {
     console.log(flag);
     if (flag) {
       console.log(flag);
-      if (prog.is_y_main_head_inside(this.end, y + this.start.height + 5))
+      if (prog.is_y_main_head_inside(this.end, y + this.start.height + 5)) {
         return true;
-      else {
+      } else {
         this.start.delete();
       }
     }
@@ -74,6 +75,7 @@ var Loop = enchant.Class.create(enchant.Sprite, {
       if (prog.is_y_s_head_inside(this.end, y + this.start.height + 5))
         return true;
       else {
+        console.log("fff");
         this.start.delete();
       }
     }
@@ -87,6 +89,7 @@ var Loop = enchant.Class.create(enchant.Sprite, {
       if (prog.is_y_h_head_inside(this.end, y + this.start.height + 5))
         return true;
       else {
+        console.log("fff");
         this.start.delete();
       }
     }
@@ -100,6 +103,7 @@ var Loop = enchant.Class.create(enchant.Sprite, {
       if (prog.is_y_d_head_inside(this.end, y + this.start.height + 5))
         return true;
       else {
+        console.log("fff");
         this.start.delete();
       }
     }
@@ -113,6 +117,7 @@ var Loop = enchant.Class.create(enchant.Sprite, {
       if (prog.is_y_c_head_inside(this.end, y + this.start.height + 5))
         return true;
       else {
+        console.log("fff");
         this.start.delete();
       }
     }
@@ -125,15 +130,9 @@ var Loop = enchant.Class.create(enchant.Sprite, {
     stage.addChild(this.end);
   },
 
-  register_move: function() {
-    this.addEventListener("touchmove", function(e) {
-      if (this.prev != null || this.next != null) {
-        if (this.x > this.prev.x + 32 || this.x < this.prev.x) {
-          this.delete();
-        }
-      }
-      this.x = e.x;
-      this.y = e.y;
+  register_height: function() {
+    this.addEventListener("enterframe", function(e) {
+      this.height = (this.end.y + this.end.height) - this.start.y;
     });
   },
 });
