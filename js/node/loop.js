@@ -8,8 +8,8 @@ var Loop = enchant.Class.create(enchant.Sprite, {
     this.height = this.start.height + this.end.height + 5;
     this.backgroundColor = "orange";
     this.register_height();
-    // 異動前のブロックのy座標を保存
-    this.keep_y
+    // 移動前のブロックのy座標を保存
+    this.keep_y;
   },
 
   create_block: function(stage, x, y, loop) {

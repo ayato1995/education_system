@@ -12,8 +12,8 @@ var Terminal_symbol = enchant.Class.create(enchant.Sprite, {
     /* 連結リスト */
     this.prev = null;
     this.next = null;
-    // is_touch: ブロックの削除のタイミングを管理
-    this.is_touch = true;
+    // 移動前のブロックのy座標を保存
+    this.keep_y;
   },
 
   /* 画面出力用のデータのsetter */
@@ -107,7 +107,7 @@ var Terminal_symbol = enchant.Class.create(enchant.Sprite, {
       }
     } else if (prev != null) {
       if (e.x > prev.x + prev.width + 5 ||
-          e.x < prev.x - 5) {
+          e.x < prev.x - 5 || e.y < prev.y) {
         this.delete();
         this.move(prev);
         return true;
@@ -143,6 +143,7 @@ var Terminal_symbol = enchant.Class.create(enchant.Sprite, {
         return true;
       }
     }
+    return false;
   },
 
   /* コンソール出力用 */
@@ -172,40 +173,19 @@ var Terminal_symbol = enchant.Class.create(enchant.Sprite, {
       console.log("init_block_append : " + this.node.type);
       stage.is_touch = true;
       var prog = stage.prog
-      if (prog.is_x_main_head_inside(e.x)) {
-        if (prog.is_y_main_head_inside(this.node, e.y)) {
-          return true;
-        }
-      }
-      if (prog.is_x_s_head_inside(e.x)) {
-        if (prog.is_y_s_head_inside(this.node, e.y)) {
-          return true;
-        }
-      }
-      if (prog.is_x_h_head_inside(e.x)) {
-        if (prog.is_y_h_head_inside(this.node, e.y)) {
-          return true;
-        }
-      }
-      if (prog.is_x_d_head_inside(e.x)) {
-        if (prog.is_y_d_head_inside(this.node, e.y)) {
-          return true;
-        }
-      }
-      if (prog.is_x_c_head_inside(e.x)) {
-        if (prog.is_y_c_head_inside(this.node, e.y)) {
-          return true;
-        }
+      if (this.node.block_append(stage.prog, e)) {
+        return true;
       }
       stage.removeChild(this.node);
+      return false;
     });
   },
 
   // クリックされた時に最前面にする
   register_above: function(stage) {
     this.addEventListener("touchstart", function() {
-      console.log(this.type);
       stage.addChild(this);
+      this.keep_y = this.y;
     });
   },
 
@@ -220,13 +200,18 @@ var Terminal_symbol = enchant.Class.create(enchant.Sprite, {
   register_append: function(stage) {
     this.addEventListener("touchend", function(e) {
       console.log("appen : " + this.type);
-      var prog = stage.prog;
       if (!this.block_delete(e)) {
+        console.log("false");
+        stage.removeChild(this);
         return false;
       }
-      if (this.block_append(prog, e)) {
+      if (this.keep_y < e.y) {
+        e.y -= this.height + 5;
+      }
+      if (this.block_append(stage.prog, e)) {
         return true;
       }
+      console.log("false");
       stage.removeChild(this);
       return false;
     });
