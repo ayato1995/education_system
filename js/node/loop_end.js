@@ -8,8 +8,6 @@ var Loop_end = enchant.Class.create(Terminal_symbol, {
     this.set_x(loop.end.x);
     this.set_y(loop.y + loop.height - this.height);
     this.set_backgroundColor(loop.end.backgroundColor);
-    this.register_move(stage, loop, loop.start);
-    this.register_append(stage, loop, loop.start);
   },
 
   set_block: function(img, x, y, color, stage, loop, start) {
@@ -47,40 +45,35 @@ var Loop_end = enchant.Class.create(Terminal_symbol, {
       stage.is_touch = true;
       var prog = stage.prog;
       if (prog.is_x_main_head_inside(e.x)) {
-        if (prog.is_y_main_head_inside(this.node.start, e.y) &&
-            prog.is_y_main_head_inside(this.node.end, e.y)) {
+        if (this.node.is_y_main_head_inside(prog, e.y)) {
           this.node.x = this.node.start.x;
           this.node.y = this.node.start.y;
           return true;
         }
       }
       if (prog.is_x_s_head_inside(e.x)) {
-        if (prog.is_y_s_head_inside(this.node.start, e.y) &&
-            prog.is_y_s_head_inside(this.node.end, e.y)) {
+        if (this.node.is_y_s_head_inside(prog, e.y)) {
           this.node.x = this.node.start.x;
           this.node.y = this.node.start.y;
           return true;
         }
       }
       if (prog.is_x_h_head_inside(e.x)) {
-        if (prog.is_y_h_head_inside(this.node.start, e.y) &&
-            prog.is_y_h_head_inside(this.node.end, e.y)) {
+        if (this.node.is_y_h_head_inside(prog, e.y)) {
           this.node.x = this.node.start.x;
           this.node.y = this.node.start.y;
           return true;
         }
       }
       if (prog.is_x_d_head_inside(e.x)) {
-        if (prog.is_y_d_head_inside(this.node.start, e.y) &&
-            prog.is_y_d_head_inside(this.node.end, e.y)) {
+        if (this.node.is_y_d_head_inside(prog, e.y)) {
           this.node.x = this.node.start.x;
           this.node.y = this.node.start.y;
           return true;
         }
       }
       if (prog.is_x_c_head_inside(e.x)) {
-        if (prog.is_y_c_head_inside(this.node.start, e.y) &&
-            prog.is_y_c_head_inside(this.node.end, e.y)) {
+        if (this.node.is_y_c_head_inside(prog, e.y)) {
           this.node.x = this.node.start.x;
           this.node.y = this.node.start.y;
           return true;
@@ -93,74 +86,86 @@ var Loop_end = enchant.Class.create(Terminal_symbol, {
     });
   },
 
-  register_move: function(stage, loop, start) {
+  register_move: function(stage, loop) {
     this.addEventListener("touchmove", function(e) {
-      if (start == this.prev) console.log("true");
-      if (this.prev != null || this.next != null) {
-        console.log("delete");
-        if (this.x > this.prev.x + 32 || this.x < this.prev.x)  {
-          console.log("delete : loop, start");
-          start.delete();
-          this.delete();
-          console.log("コンンプリート");
-        }
-      }
       this.x = e.x;
       this.y = e.y;
       loop.x = e.x;
       loop.y = e.y - this.height - 5;
-      start.x = e.x;
-      start.y = e.y - this.height - 5;
+      loop.start.x = e.x;
+      loop.start.y = e.y - this.height - 5;
     });
   },
 
-  register_append: function(stage, loop, start) {
+  register_append: function(stage, loop) {
     this.addEventListener("touchend", function(e) {
       var prog = stage.prog;
+      if (this.prev != null || this.next != null) {
+        if (this.x > this.prev.x + this.prev.width + 5 ||
+            this.x < this.prev.x - 5) {
+          loop.start.delete();
+          this.delete();
+        }
+      }
       if (prog.is_x_main_head_inside(e.x)) {
-        if (prog.is_y_main_head_inside(start, e.y) &&
-            prog.is_y_main_head_inside(this, e.y)) {
-          loop.x = start.x;
-          loop.y = start.y;
-          return true;
+        if (prog.is_y_main_head_inside(loop.start, e.y)) {
+          if (!prog.is_y_main_head_inside(this, e.y)) {
+            loop.start.delete();
+          } else {
+            loop.x = loop.start.x;
+            loop.y = loop.start.y;
+            return true;
+          }
         }
       }
       if (prog.is_x_s_head_inside(e.x)) {
-        if (prog.is_y_s_head_inside(start, e.y) &&
-            prog.is_y_s_head_inside(this, e.y)) {
-          loop.x = start.x;
-          loop.y = start.y;
-          return true;
+        if (prog.is_y_s_head_inside(loop.start, e.y)) {
+          if (!prog.is_y_s_head_inside(this, e.y)) {
+            loop.start.delete();
+          } else {
+            loop.x = loop.start.x;
+            loop.y = loop.start.y;
+            return true;
+          }
         }
       }
       if (prog.is_x_h_head_inside(e.x)) {
-        if (prog.is_y_h_head_inside(start, e.y) &&
-            prog.is_y_h_head_inside(this, e.y)) {
-          loop.x = start.x;
-          loop.y = start.y;
-          return true;
-        }
+        if (prog.is_y_h_head_inside(loop.start, e.y)) {
+          if (!prog.is_y_h_head_inside(this, e.y)) {
+            loop.start.delete()
+          } else {
+            loop.x = start.x;
+            loop.y = start.y;
+            return true;
+          }
+        }    
       }
       if (prog.is_x_d_head_inside(e.x)) {
-        if (prog.is_y_d_head_inside(start, e.y) &&
-            prog.is_y_d_head_inside(this, e.y)) {
-          loop.x = start.x;
-          loop.y = start.y;
-          return true;
+        if (prog.is_y_d_head_inside(loop.start, e.y)) {
+          if (!prog.is_y_d_head_inside(this, e.y)) {
+            loop.start.delete();
+          } else {
+            loop.x = start.x;
+            loop.y = start.y;
+            return true;
+          }
         }
       }
       if (prog.is_x_c_head_inside(e.x)) {
-        if (prog.is_y_c_head_inside(start, e.y) &&
-            prog.is_y_c_head_inside(this, e.y)) {
-          loop.x = start.x;
-          loop.y = start.y;
-          return true;
+        if (prog.is_y_c_head_inside(loop.start, e.y)) {
+          if (!prog.is_y_c_head_inside(this, e.y)) {
+            loop.start.delete();
+          } else {
+            loop.x = start.x;
+            loop.y = start.y;
+            return true;
+          }
         }
       }
+
+      stage.removeChild(loop.start);
       stage.removeChild(this);
       stage.removeChild(loop);
-      stage.removeChild(start);
     });
   }
-
 });

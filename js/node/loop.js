@@ -15,8 +15,12 @@ var Loop = enchant.Class.create(enchant.Sprite, {
     var l = new Loop();
     l.x = x;
     l.y = y;
-    l.start.create_block(this, loop, stage);
-    l.end.create_block(this, loop, stage);
+    l.start.create_block(loop, stage);
+    l.end.create_block(loop, stage);
+    l.start.register_move(stage, l);
+    l.start.register_append(stage, l);
+    l.end.register_move(stage, l, l.start);
+    l.end.register_append(stage, l, l.start);
     return l;
   },
 
@@ -64,10 +68,10 @@ var Loop = enchant.Class.create(enchant.Sprite, {
   },
 
   is_y_s_head_inside: function(prog, y) {
-    var flag = prog.is_y_sain_head_inside(this.start, y);
+    var flag = prog.is_y_s_head_inside(this.start, y);
     if (flag) {
       console.log(flag);
-      if (prog.is_y_sain_head_inside(this.end, y + this.start.height + 5))
+      if (prog.is_y_s_head_inside(this.end, y + this.start.height + 5))
         return true;
       else {
         this.start.delete();
