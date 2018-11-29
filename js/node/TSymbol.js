@@ -55,12 +55,13 @@ var Terminal_symbol = enchant.Class.create(enchant.Sprite, {
       node.y = prev.y + prev.height + 5;
       node = node.next;
       i++;
+      /*
       if (i == 5) {
         console.log("looooooooooooop");
         break;
       }
+      */
     }
-    // console.log("move end");
   },
 
   /* 連結リスト */
@@ -80,7 +81,6 @@ var Terminal_symbol = enchant.Class.create(enchant.Sprite, {
     }
     this.set_next(node);
     this.next.set_prev(this);
-    // this.move(node);
   },
 
   delete: function() {
@@ -91,7 +91,58 @@ var Terminal_symbol = enchant.Class.create(enchant.Sprite, {
     var prev = this.prev;
     this.next = null;
     this.prev = null;
-    // this.move(prev);
+  },
+
+  block_delete: function(e) {
+    console.log("block_delete");
+    var prev = this.prev;
+    var next = this.next;
+    if (prev != null && next != null) {
+      if (e.x > prev.x + prev.width + 5 ||
+          e.x < prev.x - 5 || e.y < prev.y ||
+          e.y > next.y + next.height) {
+        this.delete();
+        this.move(prev);
+        return true;
+      }
+    } else if (prev != null) {
+      if (e.x > prev.x + prev.width + 5 ||
+          e.x < prev.x - 5) {
+        this.delete();
+        this.move(prev);
+        return true;
+      }
+    }
+    this.move(this);
+    return false;
+  },
+
+  block_append: function(prog, e) {
+    if (prog.is_x_main_head_inside(e.x)) {
+      if (prog.is_y_main_head_inside(this, e.y)) {
+        return true;
+      }
+    }
+    if (prog.is_x_s_head_inside(e.x)) {
+      if (prog.is_y_s_head_inside(this, e.y)) {
+        return true;
+      }
+    }
+    if (prog.is_x_h_head_inside(e.x)) {
+      if (prog.is_y_h_head_inside(this, e.y)) {
+        return true;
+      }
+    }
+    if (prog.is_x_d_head_inside(e.x)) {
+      if (prog.is_y_d_head_inside(this, e.y)) {
+        return true;
+      }
+    }
+    if (prog.is_x_c_head_inside(e.x)) {
+      if (prog.is_y_c_head_inside(this, e.y)) {
+        return true;
+      }
+    }
   },
 
   /* コンソール出力用 */
@@ -123,7 +174,6 @@ var Terminal_symbol = enchant.Class.create(enchant.Sprite, {
       var prog = stage.prog
       if (prog.is_x_main_head_inside(e.x)) {
         if (prog.is_y_main_head_inside(this.node, e.y)) {
-          console.log("ddd");
           return true;
         }
       }
@@ -151,64 +201,34 @@ var Terminal_symbol = enchant.Class.create(enchant.Sprite, {
     });
   },
 
+  // クリックされた時に最前面にする
+  register_above: function(stage) {
+    this.addEventListener("touchstart", function() {
+      console.log(this.type);
+      stage.addChild(this);
+    });
+  },
+
   register_move: function(stage) {
     this.addEventListener("touchmove", function(e) {
       this.x = e.x;
       this.y = e.y;
-    })
+    });
   },
-
 
   /* 連結リスト挿入用 */
   register_append: function(stage) {
     this.addEventListener("touchend", function(e) {
       console.log("appen : " + this.type);
       var prog = stage.prog;
-      if (this.prev != null && this.next != null) {
-        if (e.x > this.prev.x + this.prev.width + 5 ||
-            e.x < this.prev.x - 5 || e.y < this.prev.y ||
-            e.y > this.next.y + this.next.height) {
-          var prev = this.prev;
-          this.delete();
-          this.move(prev);
-        }
-      } else if (this.prev != null) {
-        if (e.x > this.prev.x + this.prev.width + 5 ||
-            e.x < this.prev.x - 5) {
-          var prev = this.prev;
-          this.delete();
-          this.move(prev);
-        }
-      } else {
-        this.move(this);
+      if (!this.block_delete(e)) {
         return false;
       }
-      if (prog.is_x_main_head_inside(e.x)) {
-        if (prog.is_y_main_head_inside(this, e.y)) {
-          return true;
-        }
-      }
-      if (prog.is_x_s_head_inside(e.x)) {
-        if (prog.is_y_s_head_inside(this, e.y)) {
-          return true;
-        }
-      }
-      if (prog.is_x_h_head_inside(e.x)) {
-        if (prog.is_y_h_head_inside(this, e.y)) {
-          return true;
-        }
-      }
-      if (prog.is_x_d_head_inside(e.x)) {
-        if (prog.is_y_d_head_inside(this, e.y)) {
-          return true;
-        }
-      }
-      if (prog.is_x_c_head_inside(e.x)) {
-        if (prog.is_y_c_head_inside(this, e.y)) {
-          return true;
-        }
+      if (this.block_append(prog, e)) {
+        return true;
       }
       stage.removeChild(this);
+      return false;
     });
   },
 });

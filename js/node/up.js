@@ -11,6 +11,7 @@ var Up = enchant.Class.create(Terminal_symbol, {
     up.set_backgroundColor(this.backgroundColor);
     up.register_move(stage);
     up.register_append(stage);
+    up.register_above(stage);
     return up;
   }
 });

@@ -11,6 +11,7 @@ var Rotate_left = enchant.Class.create(Terminal_symbol, {
     rl.set_backgroundColor(this.backgroundColor);
     rl.register_move(stage);
     rl.register_append(stage);
+    rl.register_above(stage);
     return rl;
   }
 });

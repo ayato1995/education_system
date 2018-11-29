@@ -97,6 +97,12 @@ var Loop_start = enchant.Class.create(Terminal_symbol, {
     });
   },
 
+  register_above: function(stage, loop) {
+    this.addEventListener("touchstart", function() {
+      loop.most_above(stage);
+    });
+  },
+
   register_move: function(stage, loop) {
     this.addEventListener("touchmove", function(e) {
       this.x = e.x;

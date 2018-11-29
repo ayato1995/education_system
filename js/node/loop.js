@@ -20,8 +20,10 @@ var Loop = enchant.Class.create(enchant.Sprite, {
     l.end.create_block(loop, stage);
     l.start.register_move(stage, l);
     l.start.register_append(stage, l);
-    l.end.register_move(stage, l, l.start);
-    l.end.register_append(stage, l, l.start);
+    l.start.register_above(stage, l);
+    l.end.register_move(stage, l);
+    l.end.register_append(stage, l);
+    l.end.register_append(stage, l);
     return l;
   },
 
@@ -53,6 +55,12 @@ var Loop = enchant.Class.create(enchant.Sprite, {
     this.start.delete();
     this.end.delete();
     node.move(prev);
+  },
+
+  most_above: function(stage) {
+    stage.addChild(this.start);
+    stage.addChild(this);
+    stage.addChild(this.end);
   },
 
   loop_delete: function(node, e) {

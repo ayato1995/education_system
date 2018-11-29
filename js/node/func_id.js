@@ -13,6 +13,7 @@ var Func_id = enchant.Class.create(Terminal_symbol, {
     fi.set_backgroundColor(this.backgroundColor);
     fi.register_move(stage);
     fi.register_append(stage);
+    fi.register_above(stage);
     return fi;
   },
 
