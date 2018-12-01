@@ -1,6 +1,6 @@
 enchant();
 const WIDTH = 600;
-const HIGHT = 400;
+const HIGHT = 500;
 
 window.onload = function() {
   var game = new Core(WIDTH, HIGHT);
