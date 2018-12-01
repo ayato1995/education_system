@@ -17,13 +17,13 @@ var Stage = enchant.Class.create(enchant.Scene, {
     b[2].set_block(null, 10, this.set_y(b[1]), "red", this);
     b.push(new Loop());
     b[3].set_block(null, null, 10, this.set_y(b[2]), this);
-    b.push(new Func_id("spead", 0));
+    b.push(new Func_id("spead"));
     b[4].set_block(null, 10, this.set_y(b[3]), "green", this);
-    b.push(new Func_id("heart", 0));
+    b.push(new Func_id("heart"));
     b[5].set_block(null, 10, this.set_y(b[4]), "green", this);
-    b.push(new Func_id("dia", 0));
+    b.push(new Func_id("dia"));
     b[6].set_block(null, 10, this.set_y(b[5]), "green", this);
-    b.push(new Func_id("clover", 0));
+    b.push(new Func_id("clover"));
     b[7].set_block(null, 10, this.set_y(b[6]), "green", this);
     b.push(new Param(0));
     b[8].set_block(null, 10, this.set_y(b[7]), "aquamarine", this);

@@ -8,7 +8,8 @@ var Loop = enchant.Class.create(enchant.Sprite, {
     this.height = this.start.height + this.end.height + 5;
     this.backgroundColor = "orange";
     this.register_height();
-    // 移動前のブロックのy座標を保存
+    // 移動前のブロックのx, y座標を保存
+    this.keep_x;
     this.keep_y;
   },
 
@@ -51,6 +52,7 @@ var Loop = enchant.Class.create(enchant.Sprite, {
   },
 
   delete: function(node, prev) {
+    var prev = this.start.prev;
     this.start.delete();
     this.end.delete();
     node.move(prev);
@@ -69,6 +71,7 @@ var Loop = enchant.Class.create(enchant.Sprite, {
 
   loop_delete: function(node, e) {
     console.log("loop_delete");
+    var start_prev = this.start.prev;
     var prev = node.prev;
     var next = node.next;
     if (prev != null && next != null) {
@@ -91,7 +94,7 @@ var Loop = enchant.Class.create(enchant.Sprite, {
         return true;
       }
     }
-    node.move(node);
+    node.move(start_prev);
     return false;
   },
 
@@ -102,7 +105,9 @@ var Loop = enchant.Class.create(enchant.Sprite, {
     var end = this.end;
     var start_y = start.y;
     var end_y = end.y;
-    if (this.keep_y < this.y) {
+    if (this.keep_x - 5 < this.x &&
+        this.keep_x + this.width + 5 > this.x &&
+        this.keep_y < this.y) {
       start_y = start.y - (start.height + 5) * 2;
       end_y = end.y - (end.height + 5) * 2;
     }

@@ -90,7 +90,8 @@ var Loop_end = enchant.Class.create(Terminal_symbol, {
   regsiter_above: function(stage, loop) {
     this.addEventListener("touchstart", function() {
       loop.most_above(stage);
-      loop.keep_y = this.y;
+      loop.keep_y = loop.y;
+      loop.keep_x = loop.x;
     });
   },
 

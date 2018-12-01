@@ -12,7 +12,8 @@ var Terminal_symbol = enchant.Class.create(enchant.Sprite, {
     /* 連結リスト */
     this.prev = null;
     this.next = null;
-    // 移動前のブロックのy座標を保存
+    // 移動前のブロックのx, y座標を保存
+    this.keep_x;
     this.keep_y;
   },
 
@@ -88,7 +89,6 @@ var Terminal_symbol = enchant.Class.create(enchant.Sprite, {
       this.next.set_prev(this.prev);
     }
     this.prev.set_next(this.next);
-    var prev = this.prev;
     this.next = null;
     this.prev = null;
   },
@@ -185,6 +185,7 @@ var Terminal_symbol = enchant.Class.create(enchant.Sprite, {
   register_above: function(stage) {
     this.addEventListener("touchstart", function() {
       stage.addChild(this);
+      this.keep_x = this.x;
       this.keep_y = this.y;
     });
   },
@@ -202,16 +203,16 @@ var Terminal_symbol = enchant.Class.create(enchant.Sprite, {
       console.log("appen : " + this.type);
       if (!this.block_delete(e)) {
         console.log("false");
-        stage.removeChild(this);
         return false;
       }
-      if (this.keep_y < e.y) {
+      if (this.keep_x + this.width + 5 > e.x &&
+          this.keep_x - 5 < e.x &&
+          this.keep_y + this.height < e.y) {
         e.y -= this.height + 5;
       }
       if (this.block_append(stage.prog, e)) {
         return true;
       }
-      console.log("false");
       stage.removeChild(this);
       return false;
     });

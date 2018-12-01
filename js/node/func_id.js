@@ -1,8 +1,8 @@
 var Func_id = enchant.Class.create(Terminal_symbol, {
-  initialize: function(name, args) {
+  initialize: function(name) {
     Terminal_symbol.call(this, "func_id");
     this.name = name;
-    this.args = args;
+    this.args = [];
   },
 
   create_block: function(stage, x, y) {
@@ -15,6 +15,10 @@ var Func_id = enchant.Class.create(Terminal_symbol, {
     fi.register_append(stage);
     fi.register_above(stage);
     return fi;
+  },
+
+  set_args: function(arg_id) {
+    this.args.push(arg_id);
   },
 
   display: function() {
