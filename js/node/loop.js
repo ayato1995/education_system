@@ -24,7 +24,7 @@ var Loop = enchant.Class.create(enchant.Sprite, {
     l.start.register_above(stage, l);
     l.end.register_move(stage, l);
     l.end.register_append(stage, l);
-    l.end.register_append(stage, l);
+    l.end.register_above(stage, l);
     return l;
   },
 
@@ -79,6 +79,9 @@ var Loop = enchant.Class.create(enchant.Sprite, {
         if (next.next != null) {
           next = next.next;
         }
+      }
+      if (node.type == "loop_end" && prev.type == "loop_start") {
+        prev = start_prev;
       }
       if (e.x > prev.x + prev.width + 5 ||
           e.x < prev.x - 5 || e.y < prev.y ||
