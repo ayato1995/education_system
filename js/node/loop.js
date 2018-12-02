@@ -147,65 +147,46 @@ var Loop = enchant.Class.create(enchant.Sprite, {
 
 
   is_y_main_head_inside: function(prog, y) {
-    var flag = prog.is_y_main_head_inside(this.start, y);
-    if (flag) {
-      if (prog.is_y_main_head_inside(this.end, y + this.start.height + 5)) {
+    if (prog.is_y_main_head_inside(this.start, y)) {
+      if (prog.is_y_main_head_inside(this.end, y + this.start.height + 5))
         return true;
-      } else {
-        this.start.delete();
-      }
+      this.start.delete();
     }
     return false;
   },
 
   is_y_s_head_inside: function(prog, y) {
-    var flag = prog.is_y_s_head_inside(this.start, y);
-    if (flag) {
-      console.log(flag);
+    if (prog.is_y_s_head_inside(this.start, y)) {
       if (prog.is_y_s_head_inside(this.end, y + this.start.height + 5))
         return true;
-      else {
-        this.start.delete();
-      }
+      this.start.delete();
     }
     return false;
   },
 
   is_y_h_head_inside: function(prog, y) {
-    var flag = prog.is_y_h_head_inside(this.start, y);
-    if (flag) {
-      console.log(flag);
+    if (prog.is_y_h_head_inside(this.start, y)) {
       if (prog.is_y_h_head_inside(this.end, y + this.start.height + 5))
         return true;
-      else {
-        this.start.delete();
-      }
+      this.start.delete();
     }
     return false;
   },
 
   is_y_d_head_inside: function(prog, y) {
-    var flag = prog.is_y_d_head_inside(this.start, y);
-    if (flag) {
-      console.log(flag);
+    if (prog.is_y_d_head_inside(this.start, y)) {
       if (prog.is_y_d_head_inside(this.end, y + this.start.height + 5))
         return true;
-      else {
-        this.start.delete();
-      }
+      this.start.delete();
     }
     return false;
   },
 
   is_y_c_head_inside: function(prog, y) {
-    var flag = prog.is_y_c_head_inside(this.start, y);
-    if (flag) {
-      console.log(flag);
+    if (prog.is_y_c_head_inside(this.start, y)) {
       if (prog.is_y_c_head_inside(this.end, y + this.start.height + 5))
         return true;
-      else {
-        this.start.delete();
-      }
+      this.start.delete();
     }
     return false;
   },
