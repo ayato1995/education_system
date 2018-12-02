@@ -91,6 +91,9 @@ var Loop = enchant.Class.create(enchant.Sprite, {
       }
     }
     if (prev != null) {
+      if (node.type == "loop_end" && prev.type == "loop_start") {
+        prev = start_prev;
+      }
       if (e.x > prev.x + prev.width + 5 ||
           e.x < prev.x - 5 || e.y < prev.y) {
         this.delete(node, prev);
@@ -101,85 +104,47 @@ var Loop = enchant.Class.create(enchant.Sprite, {
     return false;
   },
 
-  loop_append: function(stage, node, e) {
-    console.log("loop_append");
+  loop_append: function(stage, e) {
     var prog = stage.prog;
-    var start = this.start;
-    var end = this.end;
-    var start_y = start.y;
-    var end_y = end.y;
-    if (this.keep_x - 5 < this.x &&
-        this.keep_x + this.width + 5 > this.x &&
-        this.keep_y < this.y) {
-      start_y = start.y - (start.height + 5) * 2;
-      end_y = end.y - (end.height + 5) * 2;
-    }
     if (prog.is_x_main_head_inside(e.x)) {
-      if (prog.is_y_main_head_inside(start, start_y)) {
-        if (!prog.is_y_main_head_inside(end, end_y)) {
-          var prev = start.prev;
-          start.delete();
-          start.move(prev);
-        } else {
-          this.x = start.x;
-          this.y = start.y;
-          return true;
-        }
+      if (this.is_y_main_head_inside(prog, e.y)) {
+        this.x = this.start.x;
+        this.y = this.start.y;
+        return true;
       }
     }
     if (prog.is_x_s_head_inside(e.x)) {
-      if (prog.is_y_s_head_inside(start, start_y)) {
-        if (!prog.is_y_s_head_inside(end, end_y)) {
-          var prev = node.prev;
-          start.delete();
-          start.move(prev);
-        } else {
-          this.x = start.x;
-          this.y = start.y;
-          return true;
-        }
+      if (this.is_y_s_head_inside(prog, e.y)) {
+        this.x = this.start.x;
+        this.y = this.start.y;
+        return true;
       }
     }
     if (prog.is_x_h_head_inside(e.x)) {
-      if (prog.is_y_h_head_inside(start, start_y)) {
-        if (!prog.is_y_h_head_inside(end, end_y)) {
-          var prev = node.prev;
-          start.delete();
-          start.move(prev);
-        } else {
-          this.x = start.x;
-          this.y = start.y;
-          return true;
-        }
+      if (this.is_y_h_head_inside(prog, e.y)) {
+        this.x = this.start.x;
+        this.y = this.start.y;
+        return true;
       }
     }
     if (prog.is_x_d_head_inside(e.x)) {
-      if (prog.is_y_d_head_inside(start, start_y)) {
-        if (!prog.is_y_d_head_inside(end, end_y)) {
-          var prev = node.prev;
-          start.delete();
-          start.move(prev);
-        } else {
-          this.x = start.x;
-          this.y = start.y;
-          return true;
-        }
+      if (this.is_y_d_head_inside(prog, e.y)) {
+        this.x = this.start.x;
+        this.y = this.start.y;
+        return true;
       }
     }
     if (prog.is_x_c_head_inside(e.x)) {
-      if (prog.is_y_c_head_inside(start, start_y)) {
-        if (!prog.is_y_c_head_inside(end, end_y)) {
-          var prev = node.prev;
-          start.delete();
-          start.move(prev);
-        } else {
-          this.x = start.x;
-          this.y = start.y;
-          return true;
-        }
+      if (this.is_y_c_head_inside(prog, e.y)) {
+        this.x = this.start.x;
+        this.y = this.start.y;
+        return true;
       }
     }
+    this.remove_block(stage);
+    return false;
   },
+
 
   is_y_main_head_inside: function(prog, y) {
     var flag = prog.is_y_main_head_inside(this.start, y);

@@ -53,47 +53,7 @@ var Loop_start = enchant.Class.create(Terminal_symbol, {
     this.addEventListener("touchend", function(e) {
       console.log("init_block_append : " + this.node.start.type);
       stage.is_touch = true;
-      var prog = stage.prog;
-      if (prog.is_x_main_head_inside(e.x)) {
-        if (this.node.is_y_main_head_inside(prog, e.y)) {
-          // prog.debug()
-          this.node.x = this.node.start.x;
-          this.node.y = this.node.start.y;
-          return true;
-        }
-      }
-      if (prog.is_x_s_head_inside(e.x)) {
-        if (this.node.is_y_s_head_inside(prog, e.y)) {
-          this.node.x = this.node.start.x;
-          this.node.y = this.node.start.y;
-          return true;
-        }
-      }
-      if (prog.is_x_h_head_inside(e.x)) {
-        if (this.node.is_y_h_head_inside(prog, e.y)) {
-          this.node.x = this.node.start.x;
-          this.node.y = this.node.start.y;
-          return true;
-        }
-      }
-      if (prog.is_x_d_head_inside(e.x)) {
-        if (this.node.is_y_d_head_inside(prog, e.y)) {
-          this.node.x = this.node.start.x;
-          this.node.y = this.node.start.y;
-          return true;
-        }
-      }
-      if (prog.is_x_c_head_inside(e.x)) {
-        if (this.node.is_y_c_head_inside(prog, e.y)) {
-          this.node.x = this.node.start.x;
-          this.node.y = this.node.start.y;
-          return true;
-        }
-      }
-      stage.removeChild(this.node);
-      stage.removeChild(this.node.start);
-      stage.removeChild(this.node.end);
-      return false;
+      return this.node.loop_append(stage, e);
     });
   },
 
@@ -123,11 +83,16 @@ var Loop_start = enchant.Class.create(Terminal_symbol, {
         stage.prog.debug();
         return false;
       }
-      if (loop.loop_append(stage, this, e)) {
-        return true;
+      if (loop.keep_x - 5 < loop.x &&
+        loop.keep_x + loop.width + 5 > loop.x &&
+        loop.keep_y < loop.y) {
+        console.log(loop.keep_y);
+      console.log(loop.y);
+      console.log(e.y);
+        e.y -= (this.height + 5) * 2;
+      console.log(e.y);
       }
-      loop.remove_block(stage);
-      return false;
+      return loop.loop_append(stage, e);
     });
   }
 });
