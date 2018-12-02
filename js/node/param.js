@@ -16,23 +16,28 @@ var Param = enchant.Class.create(Terminal_symbol, {
   },
 
   block_append: function(stage, e) {
+    var prog = stage.prog;
     if (prog.is_x_s_head_inside(e.x)) {
       if (prog.is_y_s_head_inside(this, e.y)) {
+        stage.blocks[4].push_arg(this.id);
         return true;
       }
     }
     if (prog.is_x_h_head_inside(e.x)) {
       if (prog.is_y_h_head_inside(this, e.y)) {
+        stage.blocks[5].push_arg(this.id);
         return true;
       }
     }
     if (prog.is_x_d_head_inside(e.x)) {
       if (prog.is_y_d_head_inside(this, e.y)) {
+        stage.blocks[6].push_arg(this.id);
         return true;
       }
     }
     if (prog.is_x_c_head_inside(e.x)) {
       if (prog.is_y_c_head_inside(this, e.y)) {
+        stage.blocks[7].push_arg(this.id);
         return true;
       }
     }

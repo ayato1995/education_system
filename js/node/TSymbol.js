@@ -47,21 +47,11 @@ var Terminal_symbol = enchant.Class.create(enchant.Sprite, {
     if (node.type == "head") {
       node = node.next;
     }
-    var i = 0;
     while (node != null) {
-      // console.log(node.type);
-      // console.log(node.prev.type);
       var prev = node.prev;
       node.x = prev.x;
       node.y = prev.y + prev.height + 5;
       node = node.next;
-      i++;
-      /*
-      if (i == 5) {
-        console.log("looooooooooooop");
-        break;
-      }
-      */
     }
   },
 
