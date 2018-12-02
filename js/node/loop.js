@@ -69,6 +69,11 @@ var Loop = enchant.Class.create(enchant.Sprite, {
     stage.removeChild(this.end);
   },
 
+  loop_move: function() {
+    this.x = this.start.x;
+    this.y = this.start.y;
+  },
+
   loop_delete: function(node, e) {
     console.log("loop_delete");
     var start_prev = this.start.prev;
@@ -108,43 +113,37 @@ var Loop = enchant.Class.create(enchant.Sprite, {
     var prog = stage.prog;
     if (prog.is_x_main_head_inside(e.x)) {
       if (this.is_y_main_head_inside(prog, e.y)) {
-        this.x = this.start.x;
-        this.y = this.start.y;
+        this.loop_move();
         return true;
       }
     }
     if (prog.is_x_s_head_inside(e.x)) {
       if (this.is_y_s_head_inside(prog, e.y)) {
-        this.x = this.start.x;
-        this.y = this.start.y;
+        this.loop_move();
         return true;
       }
     }
     if (prog.is_x_h_head_inside(e.x)) {
       if (this.is_y_h_head_inside(prog, e.y)) {
-        this.x = this.start.x;
-        this.y = this.start.y;
+        this.loop_move();
         return true;
       }
     }
     if (prog.is_x_d_head_inside(e.x)) {
       if (this.is_y_d_head_inside(prog, e.y)) {
-        this.x = this.start.x;
-        this.y = this.start.y;
+        this.loop_move();
         return true;
       }
     }
     if (prog.is_x_c_head_inside(e.x)) {
       if (this.is_y_c_head_inside(prog, e.y)) {
-        this.x = this.start.x;
-        this.y = this.start.y;
+        this.loop_move();
         return true;
       }
     }
     this.remove_block(stage);
     return false;
   },
-
 
   is_y_main_head_inside: function(prog, y) {
     if (prog.is_y_main_head_inside(this.start, y)) {
@@ -199,8 +198,6 @@ var Loop = enchant.Class.create(enchant.Sprite, {
 
   register_height: function() {
     this.addEventListener("enterframe", function(e) {
-      this.x = this.start.x;
-      this.y = this.start.y;
       this.height = (this.end.y + this.end.height) - this.start.y;
     });
   },
