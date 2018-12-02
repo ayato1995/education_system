@@ -86,11 +86,7 @@ var Loop_start = enchant.Class.create(Terminal_symbol, {
       if (loop.keep_x - 5 < loop.x &&
         loop.keep_x + loop.width + 5 > loop.x &&
         loop.keep_y < loop.y) {
-        console.log(loop.keep_y);
-      console.log(loop.y);
-      console.log(e.y);
         e.y -= (this.height + 5) * 2;
-      console.log(e.y);
       }
       return loop.loop_append(stage, e);
     });

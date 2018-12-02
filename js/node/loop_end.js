@@ -78,7 +78,6 @@ var Loop_end = enchant.Class.create(Terminal_symbol, {
         loop.keep_y < loop.y) {
         e.y -= (loop.y - loop.keep_y) + 5;
       }
-
       return loop.loop_append(stage, e);
     });
   }

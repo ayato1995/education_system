@@ -15,9 +15,10 @@ var Param = enchant.Class.create(Terminal_symbol, {
     return p;
   },
 
-  block_append: function(prog, e) {
+  block_append: function(stage, e) {
     if (prog.is_x_s_head_inside(e.x)) {
       if (prog.is_y_s_head_inside(this, e.y)) {
+        prog.
         return true;
       }
     }
