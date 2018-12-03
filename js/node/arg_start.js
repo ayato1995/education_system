@@ -1,8 +1,11 @@
-var Arg_start = function(id) {
-  this.type = "arg_start";
-  this.id = id;
-}
+var Arg_start = enchant.Class.create(Terminal_symbol, {
+  initialize: function(id) {
+    Terminal_symbol.call(this, "arg_start");
+    this.type = "arg_start";
+    this.id = id;
+  },
 
-Arg_start.prototype.get_id = function() {
-  return this.id;
-}
+  get_id: function() {
+    return this.id;
+  },
+});

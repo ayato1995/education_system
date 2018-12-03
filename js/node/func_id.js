@@ -20,7 +20,7 @@ var Func_id = enchant.Class.create(Terminal_symbol, {
 
   set_args: function(args) {
     this.args = args;
-  }
+  },
 
   push_args: function(arg_id) {
     for (var i = 0; i < this.args.length; i++) {

@@ -1,3 +1,5 @@
-var Arg_end = function() {
-  this.type = "arg_end";
-}
+var Arg_end = enchant.Class.create(Terminal_symbol, {
+  initialize: function() {
+    this.type = "arg_end";
+  }
+});
