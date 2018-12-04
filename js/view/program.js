@@ -99,7 +99,7 @@ var Prog = enchant.Class.create({
   },
 
   debug: function() {
-    var node = this.s_head;
+    var node = this.main_head;
     while (node != null) {
       console.log(node.type);
       node = node.next;
