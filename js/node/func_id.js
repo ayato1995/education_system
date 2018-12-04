@@ -30,7 +30,6 @@ var Func_id = enchant.Class.create(Terminal_symbol, {
     var node = this;
     for (var i = 0; i < this.arg_type.length; i++) {
       this.args.push(new Arg(this.arg_type[i], this, node, stage));
-      console.log(this.args[i]);
       this.args[i].arg_addChild(stage);
       node = this.args[i];
     }
@@ -45,6 +44,34 @@ var Func_id = enchant.Class.create(Terminal_symbol, {
     return true;
   },
 
+  func_delete: function(e) {
+    console.log("func_delete");
+    var prev = this.prev;
+    var next = this.next;
+    while (next.type == "arg_start" || next.type == "arg_end") {
+      next = next.next;
+      if (next == null) break;
+    }
+    if (prev != null && next != null) {
+      if (e.x > this.keep_x + this.width + 5 ||
+          e.x < this.keep_x - 5 || e.y < prev.y ||
+          e.y > next.y + next.height) {
+        this.delete();
+        this.move(prev);
+        return true;
+      }
+    } else if (prev != null) {
+      if (e.x > this.keep_x + this.width + 5 ||
+          e.x < this.keep_x - 5 || e.y < prev.y) {
+        this.delete();
+        this.move(prev);
+        return true;
+      }
+    }
+    this.move(this);
+    return false;
+  },
+
   arg_addChild: function(stage) {
     for (var i = 0; i < this.args.length; i++) {
       stage.addChild(this.args[i].start);
@@ -54,8 +81,22 @@ var Func_id = enchant.Class.create(Terminal_symbol, {
 
   arg_removeChild: function(stage) {
     stage.removeChild(this);
-    for (var i = o; i < this.args.length; i++) {
-      args[i].arg_removeChild(stage);
+    for (var i = 0; i < this.args.length; i++) {
+      this.args[i].arg_removeChild(stage);
+    }
+  },
+
+  args_append: function() {
+    var node = this;
+    for (var i = 0; i < this.args.length; i++) {
+      this.args[i].arg_append(node);
+      node = this.args[i].end;
+    }
+  },
+
+  args_delete: function(node) {
+    for (var i = 0; i < this.args.length; i++) {
+      this.args[i].arg_delete(node);
     }
   },
 
@@ -65,10 +106,7 @@ var Func_id = enchant.Class.create(Terminal_symbol, {
       console.log("func_id init_block_append : " + this.node.type);
       stage.is_touch = true;
       if (this.node.block_append(stage, e)) {
-        var node = this.node;
-        for (var i = 0; i < this.node.args.length; i++) {
-          this.node.args[i].arg_append(node);
-        }
+        this.node.args_append();
         stage.prog.debug();
         return true;
       }
@@ -76,6 +114,7 @@ var Func_id = enchant.Class.create(Terminal_symbol, {
       return false;
     })
   },
+
   register_above: function(stage) {
     this.addEventListener("touchstart", function() {
       stage.addChild(this);
@@ -88,7 +127,10 @@ var Func_id = enchant.Class.create(Terminal_symbol, {
   register_append: function(stage) {
     this.addEventListener("touchend", function(e) {
       console.log("func_id append : " + this.type);
-      if (!this.block_delete(e)) {
+      var prev = this.prev;
+      if (this.func_delete(e)) {
+        this.args_delete(prev);
+      } else {
         console.log("false");
         return false;
       }
@@ -96,14 +138,13 @@ var Func_id = enchant.Class.create(Terminal_symbol, {
           this.keep_x - 5 < e.x &&
           this.keep_y + this.height < e.y) {
         e.y -= this.height + 5;
+        for (var i = 0; i < this.args.length; i++) {
+          e.y -= this.args[i].height;
+        }
       }
       if (this.block_append(stage, e)) {
-        var node = this;
-        for (var i = 0; i < this.args.length; i++) {
-          this.args[i].arg_append(node);
-          node = this.args[i].end;
-        }
-        stage.prog.debug();
+        this.args_append();
+        // stage.prog.debug();
         return true;
       }
       this.arg_removeChild(stage);

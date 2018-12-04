@@ -46,6 +46,13 @@ var Arg = enchant.Class.create(enchant.Sprite, {
   arg_append: function(node) {
     node.append(this.end);
     node.append(this.start);
+    node.move(node);
+  },
+
+  arg_delete: function(node) {
+    this.start.delete();
+    this.end.delete();
+    node.move(node);
   },
 
   register_move: function(node) {
