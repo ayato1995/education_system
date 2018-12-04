@@ -1,6 +1,6 @@
 var Loop = enchant.Class.create(enchant.Sprite, {
   initialize: function() {
-    enchant.Sprite.call(this, 32, 32 * 2 + 5);
+    enchant.Sprite.call(this, 32, 16 * 2 + 5);
     this.x;
     this.y;
     this.start = new Loop_start();
@@ -100,7 +100,11 @@ var Loop = enchant.Class.create(enchant.Sprite, {
         prev = start_prev;
       }
       if (e.x > prev.x + prev.width + 5 ||
-          e.x < prev.x - 5 || e.y < prev.y) {
+        e.x < prev.x - 5 || e.y < prev.y) {
+          this.delete(node, prev);
+          return true;
+      } else if (e.x > prev.x + prev.width + 5 ||
+        e.x < prev.x - 5 || this.y > prev.y) {
         this.delete(node, prev);
         return true;
       }
@@ -198,6 +202,8 @@ var Loop = enchant.Class.create(enchant.Sprite, {
 
   register_height: function() {
     this.addEventListener("enterframe", function(e) {
+      this.x = this.start.x;
+      this.y = this.start.y;
       this.height = (this.end.y + this.end.height) - this.start.y;
     });
   },

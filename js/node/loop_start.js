@@ -1,6 +1,7 @@
 var Loop_start = enchant.Class.create(Terminal_symbol, {
   initialize: function() {
     Terminal_symbol.call(this, "loop_start");
+    this.height = 16;
     this.n = 0;
   },
 
@@ -79,14 +80,18 @@ var Loop_start = enchant.Class.create(Terminal_symbol, {
   register_append: function(stage, loop) {
     this.addEventListener("touchend", function(e) {
       console.log("loop_start register_append");
+      var prev = this.prev;
       if (!loop.loop_delete(this, e)) {
         stage.prog.debug();
         return false;
       }
       if (loop.keep_x - 5 < loop.x &&
-        loop.keep_x + loop.width + 5 > loop.x &&
-        loop.keep_y < loop.y) {
-        e.y -= (this.height + 5) * 2;
+        loop.keep_x + loop.width + 5 > loop.x) {
+        if (prev.type != "loop_end") {
+          e.y -= this.height + 5;
+        } else if (loop.keep_y < loop.y) {
+          e.y -= loop.height;
+        }
       }
       return loop.loop_append(stage, e);
     });
