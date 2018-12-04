@@ -1,6 +1,6 @@
 var Arg = enchant.Class.create(enchant.Sprite, {
   initialize: function(id, func, node, stage) {
-    enchant.Sprite.call(this, 32, 32 * 2 + 5);
+    enchant.Sprite.call(this, 32, 16 * 2);
     this.x = func.x; 
     this.y = func.y + func.height;
     this.backgroundColor;
@@ -63,7 +63,7 @@ var Arg = enchant.Class.create(enchant.Sprite, {
       this.start.x = this.x;
       this.start.y = this.y;
       this.end.x = this.x;
-      this.end.y = this.y + this.height - 32;
+      this.end.y = this.y + this.height - this.end.height;
     });
   }
 });
