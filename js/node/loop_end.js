@@ -25,9 +25,7 @@ var Loop_end = enchant.Class.create(Terminal_symbol, {
       var node = this.node;
       if (stage.is_touch) {
         node = loop.create_block(stage, e.x, e.y, loop);
-        stage.addChild(node);
-        stage.addChild(node.start);
-        stage.addChild(node.end);
+        node.loop_addChild(stage);
         this.node = node;
         stage.is_touch = false;
       }
@@ -51,8 +49,8 @@ var Loop_end = enchant.Class.create(Terminal_symbol, {
   register_above: function(stage, loop) {
     this.addEventListener("touchstart", function() {
       loop.most_above(stage);
-      loop.keep_y = loop.y;
-      loop.keep_x = loop.x;
+      loop.keep_x = this.x;
+      loop.keep_y = this.y;
     });
   },
 
@@ -73,29 +71,14 @@ var Loop_end = enchant.Class.create(Terminal_symbol, {
       var prev = this.prev;
       if (!loop.loop_delete(this, e)) {
         stage.prog.debug();
-        console.log("gaa");
         return false;
       }
-      console.log(e.y);
       if (loop.keep_x - 5 < loop.x &&
         loop.keep_x + loop.width + 5 > loop.x) {
-        /*
-        if (prev.type != "loop_start") {
-          console.log("gdag")
-          e.y -= (loop.height - this.y) + 5 * 2;
-        } else {
-          console.log("ggg")
-          e.y -= this.height - 5;
-          console.log(e.y);
-        }
-        */
-        if (e.y > loop.keep_y) {
-          console.log(loop.y - this.y + 5 *2);
-          // e.y += (loop.y - this.y) + 5 * 2;
+        if (e.y > loop.keep_y + this.height) {
           e.y -= loop.height + 5;
         }
       }
-      console.log(e.y);
       return loop.loop_append(stage, e);
     });
   }
