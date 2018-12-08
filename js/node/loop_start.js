@@ -32,6 +32,7 @@ var Loop_start = enchant.Class.create(Terminal_symbol, {
     this.set_image(img);
     this.set_x(x);
     this.set_y(y);
+    this.set_n(loop.start.n);
     this.set_backgroundColor(color);
     this.register_init_move(stage, loop);
     this.register_init_append(stage);
@@ -41,13 +42,13 @@ var Loop_start = enchant.Class.create(Terminal_symbol, {
 
   set_n: function(n) {
     this.n = n;
+    this.n_label.text = String(this.n);
   },
 
   inc_loop_n: function() {
     this.n++;
     if (this.n == 11) {
       this.n = 1;
-      this.n_label.font = "10px 'MSゴシック'";
     }
   },
 
