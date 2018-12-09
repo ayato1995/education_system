@@ -3,6 +3,7 @@ var Stage = enchant.Class.create(enchant.Scene, {
     enchant.Scene.call(this);
     this.prog = new Prog();
     this.blocks = this.set_blocks();
+    this.play = new Play(this.blocks[this.blocks.length - 1].x, this.blocks[this.blocks.length - 1].y, this.prog);
     // is_touch : ブロックを作れるタイミングを管理
     this.is_touch = true;
   },
@@ -46,6 +47,10 @@ var Stage = enchant.Class.create(enchant.Scene, {
       }
       this.addChild(this.blocks[i]);
     }
+  },
+
+  display_play: function() {
+    this.addChild(this.play);
   },
 
   display_heads: function() {

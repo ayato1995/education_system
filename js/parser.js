@@ -1,14 +1,16 @@
 function main_parser (prog) {
   var prog_stack = [];
   prog_stack.push(new Main_stmts());
+  var block = prog.next;
   // loopcount : ループのstartとendの対応が取れているか
   var loop_count = 0;
   // args : 関数呼び出しの引数がいくつかを覚えておく
   var args = [];
 
-  for (var i = 0; i < prog.length; i++) {
+  while (block != null) {
+  // for (var i = 0; i < prog.length; i++) {
     var stmts = prog_stack.pop();
-    var block = prog[i];
+    // var block = prog[i];
     if (block.type == "advance") {
       stmts.push_stmt(new Up());
     } else if (block.type == "rotate_right") {
@@ -18,21 +20,22 @@ function main_parser (prog) {
     } else if (block.type == "loop_start") {
       prog_stack.push(stmts);
       /* ===== test ====== */
-      block.n = 2;
+      // block.n = 2;
       /* ================= */
       stmts = new Main_loop(block.n);
-      stmts.push_stmt(block);
+      stmts.push_stmt(new Loop_start());
+      stmts.stmts[stmts.stmts.length - 1].set_n(block.n);
       loop_count++;
     } else if (block.type == "loop_end") {
-      stmts.push_stmt(block);
+      stmts.push_stmt(new Loop_end());
       var p = prog_stack.pop();
       p.push_stmt(stmts);
       stmts = p;
       loop_count--;
     } else if (block.type == "func_id") {
       var fc = new Func_call(block.name);
-      if (block.args != 0) {
-        args.push(block.args);
+      if (block.arg_type.length != 0) {
+        args.push(block.arg_type.length);
         prog_stack.push(stmts);
         stmts = fc;
       } else {
@@ -57,6 +60,7 @@ function main_parser (prog) {
       return null;
     }
     prog_stack.push(stmts);
+    block = block.next;
   }
 
   if (loop_count != 0) {
@@ -71,17 +75,19 @@ function main_parser (prog) {
   */
 }
 
-function func_parser (func_prog) {
+function func_parser (prog, name) {
   var prog_stack = [];
-  prog_stack.push(new Func_stmts(func_prog.name));
+  prog_stack.push(new Func_stmts(name));
   // loopcount : ループのstartとendの対応が取れているか
   var loop_count = 0;
   // args : 関数呼び出しの引数がいくつかを覚えておく
   var args = [];
-  var prog = func_prog.prog;
-  for (var i = 0; i < prog.length; i++) {
+  // var prog = func_prog.prog;
+  var block = prog.next;
+  // for (var i = 0; i < prog.length; i++) {
+  while (block != null) {
     var stmts = prog_stack.pop();
-    var block = prog[i];
+    // var block = prog[i];
     if (block.type == "advance") {
       stmts.push_stmt(new Up());
     } else if (block.type == "rotate_right") {
@@ -92,7 +98,8 @@ function func_parser (func_prog) {
       prog_stack.push(stmts);
       // block.n = 5;
       stmts = new Func_loop(block.n);
-      stmts.push_stmt(block);
+      stmts.push_stmt(new Loop_start());
+      stmts.stmts[stmts.stmts.length - 1].set_n(block.n);
       loop_count++;
     } else if (block.type == "loop_end") {
       stmts.push_stmt(block);
@@ -130,6 +137,7 @@ function func_parser (func_prog) {
       return null;
     }
     prog_stack.push(stmts);
+    block = block.next;
   }
 
   if (loop_count != 0) {
