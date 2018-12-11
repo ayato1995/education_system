@@ -8,9 +8,17 @@ var Play = enchant.Class.create(enchant.Sprite, {
     this.register_play(stage);
   },
 
-  play: function(prog) {
+  display_main: function(stage, main) {
+    var prog = stage.prog;
+    // var space = prog.create_space(stage.map.x, 10, 42, 300, "gray")
+    console.log(main.display_stmts(stage, 200, 42));
+  },
+
+  play: function(stage) {
+    var prog = stage.prog;
     var fm = new Func_map();
     var main = main_parser(prog.main_head);
+    this.display_main(stage, main);
     fm.set_spead(func_parser(prog.s_head, "spead"));
     fm.set_heart(func_parser(prog.h_head, "heart"));
     fm.set_dia(func_parser(prog.d_head, "dia"));
@@ -26,7 +34,7 @@ var Play = enchant.Class.create(enchant.Sprite, {
       stage.prog.move_blocks();
       game.height += stage.prog.get_total_height();
       console.log("=============== play ===============");
-      this.play(stage.prog);
+      this.play(stage);
     });
   },
 })
