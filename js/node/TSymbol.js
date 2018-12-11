@@ -174,6 +174,7 @@ var Terminal_symbol = enchant.Class.create(enchant.Sprite, {
   // クリックされた時に最前面にする
   register_above: function(stage) {
     this.addEventListener("touchstart", function() {
+      if (stage.play_flag) return;
       stage.addChild(this);
       this.keep_x = this.x;
       this.keep_y = this.y;
@@ -182,6 +183,7 @@ var Terminal_symbol = enchant.Class.create(enchant.Sprite, {
 
   register_move: function(stage) {
     this.addEventListener("touchmove", function(e) {
+      if (stage.play_flag) return;
       this.x = e.x;
       this.y = e.y;
     });
@@ -190,6 +192,7 @@ var Terminal_symbol = enchant.Class.create(enchant.Sprite, {
   /* 連結リスト挿入用 */
   register_append: function(stage) {
     this.addEventListener("touchend", function(e) {
+      if (stage.play_flag) return;
       console.log("appen : " + this.type);
       if (!this.block_delete(e)) {
         console.log("false");

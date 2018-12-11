@@ -36,7 +36,7 @@ var Loop_start = enchant.Class.create(Terminal_symbol, {
     this.set_backgroundColor(color);
     this.register_init_move(stage, loop);
     this.register_init_append(stage);
-    this.register_inc_n();
+    this.register_inc_n(stage);
     this.register_label_move();
   },
 
@@ -53,8 +53,9 @@ var Loop_start = enchant.Class.create(Terminal_symbol, {
   },
 
   /* ラベルに関するイベントリスナ */
-  register_inc_n: function() {
+  register_inc_n: function(stage) {
     this.n_label.addEventListener("touchstart", function() {
+      if (stage.play_flag) return;
       this.inc_loop_n();
       this.n_label.text = String(this.n);
     }.bind(this));
@@ -96,6 +97,7 @@ var Loop_start = enchant.Class.create(Terminal_symbol, {
 
   register_above: function(stage, loop) {
     this.addEventListener("touchstart", function() {
+      if (stage.play_flag) return;
       loop.most_above(stage);
       loop.keep_y = loop.y;
       loop.keep_x = loop.x;
@@ -104,6 +106,7 @@ var Loop_start = enchant.Class.create(Terminal_symbol, {
 
   register_move: function(stage, loop) {
     this.addEventListener("touchmove", function(e) {
+      if (stage.play_flag) return;
       this.x = e.x;
       this.y = e.y;
       loop.x = e.x;
@@ -115,6 +118,7 @@ var Loop_start = enchant.Class.create(Terminal_symbol, {
 
   register_append: function(stage, loop) {
     this.addEventListener("touchend", function(e) {
+      if (stage.play_flag) return;
       console.log("loop_start register_append");
       var prev = this.prev;
       if (!loop.loop_delete(this, e)) {

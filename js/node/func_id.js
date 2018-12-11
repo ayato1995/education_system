@@ -117,6 +117,7 @@ var Func_id = enchant.Class.create(Terminal_symbol, {
 
   register_above: function(stage) {
     this.addEventListener("touchstart", function() {
+      if (stage.play_flag) return;
       stage.addChild(this);
       this.arg_addChild(stage);
       this.keep_x = this.x;
@@ -126,6 +127,7 @@ var Func_id = enchant.Class.create(Terminal_symbol, {
 
   register_append: function(stage) {
     this.addEventListener("touchend", function(e) {
+      if (stage.play_flag) return;
       console.log("func_id append : " + this.type);
       var prev = this.prev;
       if (this.func_delete(e)) {

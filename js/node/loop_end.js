@@ -48,6 +48,7 @@ var Loop_end = enchant.Class.create(Terminal_symbol, {
 
   register_above: function(stage, loop) {
     this.addEventListener("touchstart", function() {
+      if (stage.play_flag) return;
       loop.most_above(stage);
       loop.keep_x = this.x;
       loop.keep_y = this.y;
@@ -56,6 +57,7 @@ var Loop_end = enchant.Class.create(Terminal_symbol, {
 
   register_move: function(stage, loop) {
     this.addEventListener("touchmove", function(e) {
+      if (stage.play_flag) return;
       this.x = e.x;
       this.y = e.y;
       loop.x = e.x;
@@ -67,6 +69,7 @@ var Loop_end = enchant.Class.create(Terminal_symbol, {
 
   register_append: function(stage, loop) {
     this.addEventListener("touchend", function(e) {
+      if (stage.play_flag) return;
       console.log("loop_end register_append");
       var prev = this.prev;
       if (!loop.loop_delete(this, e)) {

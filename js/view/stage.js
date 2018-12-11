@@ -6,6 +6,8 @@ var Stage = enchant.Class.create(enchant.Scene, {
     this.play = new Play(this.blocks[this.blocks.length - 1].x, this.blocks[this.blocks.length - 1].y, this);
     // is_touch : ブロックを作れるタイミングを管理
     this.is_touch = true;
+    // play_flag : プログラムを実行しているか管理
+    this.play_flag = false;
   },
 
   set_blocks: function() {

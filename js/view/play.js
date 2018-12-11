@@ -20,6 +20,7 @@ var Play = enchant.Class.create(enchant.Sprite, {
 
   register_play: function(stage) {
     this.addEventListener("touchstart", function() {
+      stage.play_flag = true;
       stage.remove_blocks();
       stage.remove_play();
       stage.prog.move_blocks();
