@@ -3,7 +3,7 @@ const WIDTH = 600;
 const HIGHT = 500;
 
 window.onload = function() {
-  var game = new Core(WIDTH, HIGHT);
+  game = new Core(WIDTH, HIGHT);
   game.fps = 60;
 
   game.onload = function() {

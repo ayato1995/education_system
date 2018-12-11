@@ -3,7 +3,7 @@ var Stage = enchant.Class.create(enchant.Scene, {
     enchant.Scene.call(this);
     this.prog = new Prog();
     this.blocks = this.set_blocks();
-    this.play = new Play(this.blocks[this.blocks.length - 1].x, this.blocks[this.blocks.length - 1].y, this.prog);
+    this.play = new Play(this.blocks[this.blocks.length - 1].x, this.blocks[this.blocks.length - 1].y, this);
     // is_touch : ブロックを作れるタイミングを管理
     this.is_touch = true;
   },
@@ -49,16 +49,34 @@ var Stage = enchant.Class.create(enchant.Scene, {
     }
   },
 
+  remove_blocks: function() {
+    for (var i = 0; i < this.blocks.length; i++) {
+      if (i == 3) {
+        this.blocks[i].remove_block(this);
+        continue;
+      }
+      this.removeChild(this.blocks[i]);
+    }
+  },
+
   display_play: function() {
     this.addChild(this.play);
+  },
+
+  remove_play: function() {
+    this.removeChild(this.play);
   },
 
   display_heads: function() {
     this.addChild(this.prog.main_space);
     this.addChild(this.prog.s_space);
+    this.addChild(this.prog.s_head);
     this.addChild(this.prog.h_space);
+    this.addChild(this.prog.h_head);
     this.addChild(this.prog.d_space);
+    this.addChild(this.prog.d_head);
     this.addChild(this.prog.c_space);
+    this.addChild(this.prog.c_head);
   },
 
   display_map: function(map) {

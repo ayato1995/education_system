@@ -23,13 +23,27 @@ var Prog = enchant.Class.create({
     head.set_backgroundColor("yellow");
   },
 
-  create_space: function(head, height, width, color) {
-    var space = new Sprite(height, width);
+  create_space: function(head, width, height, color) {
+    var space = new Sprite(width, height);
     space.type = "space";
     space.backgroundColor = color;
     space.x = head.x - 5;
     space.y = head.y + head.height;
     return space;
+  },
+
+  move_blocks: function() {
+    this.move_block(this.main_head, this.main_space);
+    this.move_block(this.s_head, this.s_space);
+    this.move_block(this.h_head, this.h_space);
+    this.move_block(this.d_head, this.d_space);
+    this.move_block(this.c_head, this.c_space);
+  },
+
+  move_block: function(head, space) {
+    head.y = space.y + space.height + 10;
+    space.y = head.y + head.height;
+    head.move(head);
   },
 
   is_x_main_head_inside: function(x) {
