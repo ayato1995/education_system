@@ -23,6 +23,10 @@ var Prog = enchant.Class.create({
     head.set_backgroundColor("yellow");
   },
 
+  get_total_height: function() {
+    return this.main_space.height;
+  },
+
   create_space: function(head, width, height, color) {
     var space = new Sprite(width, height);
     space.type = "space";

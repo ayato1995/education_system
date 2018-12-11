@@ -23,7 +23,7 @@ var Play = enchant.Class.create(enchant.Sprite, {
       stage.remove_blocks();
       stage.remove_play();
       stage.prog.move_blocks();
-      game.height += 200;
+      game.height += stage.prog.get_total_height();
       console.log("=============== play ===============");
       this.play(stage.prog);
     });
