@@ -12,7 +12,7 @@ var Play = enchant.Class.create(enchant.Sprite, {
     var prog = stage.prog;
     var fm = new Func_map();
     var main = main_parser(prog.main_head);
-    var head = prog.copy_blocks(stage, prog.main_head, 200, 42);
+    var main_head = prog.copy_blocks(stage, prog.main_head, 200, 10, "gray");
     fm.set_spead(func_parser(prog.s_head, "spead"));
     fm.set_heart(func_parser(prog.h_head, "heart"));
     fm.set_dia(func_parser(prog.d_head, "dia"));

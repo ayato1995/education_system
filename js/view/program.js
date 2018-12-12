@@ -50,10 +50,16 @@ var Prog = enchant.Class.create({
     head.move(head);
   },
 
-  copy_blocks: function(stage, head, x, y) {
+  copy_blocks: function(stage, head, x, y, color) {
     var copy_h = new Terminal_symbol("head");
     copy_h.x = x;
     copy_h.y = y;
+    if (color != "gray") {
+      copy_h.image = head.image;
+      stage.addChild(copy_h);
+    }
+    copy_h.space = this.create_space(copy_h, copy_h.width + 10, 300 - (copy_h.y + copy_h.height), color);
+    stage.addChild(copy_h.space);
     var c_node = copy_h;
     // loop_startに対応するloop_endを取るためのstack
     var loop_nest = [];
@@ -63,6 +69,7 @@ var Prog = enchant.Class.create({
     var arg = [];
     head = head.next;
     while (head != null) {
+      y += copy_h.height + 5;
       if (head.type == "arg_start") {
         y -= 5;
       }
@@ -88,9 +95,6 @@ var Prog = enchant.Class.create({
         }
       }
       head = head.next;
-      if (head != null) {
-        y += c_node.height + 5;
-      }
     }
     return copy_h;
   },
