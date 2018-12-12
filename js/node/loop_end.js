@@ -20,6 +20,15 @@ var Loop_end = enchant.Class.create(Terminal_symbol, {
     this.register_init_append(stage);
   },
 
+  copy_block: function(stage, x, y) {
+    var le = new Loop_end();
+    le.set_x(x);
+    le.set_y(y);
+    le.set_backgroundColor(this.backgroundColor);
+    stage.addChild(le);
+    return le;
+  },
+
   register_init_move: function(stage, loop) {
     this.addEventListener("touchmove", function(e) {
       var node = this.node;

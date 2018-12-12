@@ -28,6 +28,24 @@ var Loop_start = enchant.Class.create(Terminal_symbol, {
     this.register_label_move();
   },
 
+  copy_block: function(stage, x, y) {
+    var ls = new Loop_start();
+    ls.set_x(x);
+    ls.set_y(y);
+    ls.set_n(this.n);
+    ls.set_backgroundColor(this.backgroundColor);
+    ls.register_label_move();
+    ls.loop = new Sprite(32, ls.height);
+    ls.loop.x = x;
+    ls.loop.y = y;
+    ls.register_loop_space();
+    ls.loop.backgroundColor = "orange";
+    stage.addChild(ls.loop);
+    stage.addChild(ls);
+    stage.addChild(ls.n_label);
+    return ls;
+  },
+
   set_block: function(img, x, y, color, stage, loop, end) {
     this.set_image(img);
     this.set_x(x);
@@ -66,6 +84,13 @@ var Loop_start = enchant.Class.create(Terminal_symbol, {
     this.n_label.addEventListener("enterframe", function() {
       this.n_label.x = this.x + (this.width - this.n_label.width) / 2;
       this.n_label.y = this.y + (this.height - this.n_label.height);
+    }.bind(this));
+  },
+
+  register_loop_space: function() {
+    this.loop.addEventListener("enterframe", function() {
+      this.loop.x = this.x;
+      this.loop.y = this.y;
     }.bind(this));
   },
 

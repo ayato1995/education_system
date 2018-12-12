@@ -6,8 +6,8 @@ var Arg = enchant.Class.create(enchant.Sprite, {
     this.backgroundColor;
     this.id = id;
     this.func = func;
-    this.start = new Arg_start(id, this, stage);
-    this.end = new Arg_end(this, stage);
+    this.start = new Arg_start(id, this.x, this.y);
+    this.end = new Arg_end(this.x, this.y);
     this.set_backgroundColor();
     this.register_move(node);
   },

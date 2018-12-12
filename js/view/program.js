@@ -50,6 +50,51 @@ var Prog = enchant.Class.create({
     head.move(head);
   },
 
+  copy_blocks: function(stage, head, x, y) {
+    var copy_h = new Terminal_symbol("head");
+    copy_h.x = x;
+    copy_h.y = y;
+    var c_node = copy_h;
+    // loop_startに対応するloop_endを取るためのstack
+    var loop_nest = [];
+    // 一つの関数の引数を取るための関数のstack
+    var func = [];
+    // arg_startに対応するarg_endを取るためのstack
+    var arg = [];
+    head = head.next;
+    while (head != null) {
+      if (head.type == "arg_start") {
+        y -= 5;
+      }
+      c_node.append(head.copy_block(stage, x, y));
+      c_node = c_node.next;
+      if (c_node.type == "loop_start") {
+        loop_nest.push(c_node);
+      } else if (c_node.type == "loop_end") {
+        var start = loop_nest.pop();
+        start.loop.height = y - start.loop.y;
+      } else if (c_node.type == "func_id") {
+        func.push(c_node.arg_type.length);
+      } else if (c_node.type == "arg_start") {
+        arg.push(c_node.arg);
+      } else if (c_node.type == "arg_end") {
+        var start_arg = arg.pop();
+        c_node.set_backgroundColor(start_arg.id);
+        start_arg.height = y - start_arg.y;
+        var length = func.pop();
+        length--;
+        if (length != 0) {
+          func.push(length);
+        }
+      }
+      head = head.next;
+      if (head != null) {
+        y += c_node.height + 5;
+      }
+    }
+    return copy_h;
+  },
+
   is_x_main_head_inside: function(x) {
     return this.x_head_inside(this.main_head, x);
   },
@@ -116,8 +161,7 @@ var Prog = enchant.Class.create({
     return false;
   },
 
-  debug: function() {
-    var node = this.main_head;
+  debug: function(node) {
     while (node != null) {
       console.log(node.type);
       node = node.next;

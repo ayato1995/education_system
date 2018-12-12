@@ -22,6 +22,17 @@ var Func_id = enchant.Class.create(Terminal_symbol, {
     return fi;
   },
 
+  copy_block: function(stage, x, y) {
+    var fi = new Func_id(this.name);
+    fi.set_image(this.image);
+    fi.set_x(x);
+    fi.set_y(y);
+    fi.set_arg_type(this.arg_type);
+    fi.set_backgroundColor(this.backgroundColor);
+    stage.addChild(fi);
+    return fi;
+  },
+
   set_arg_type: function(arg_type) {
     this.arg_type = arg_type;
   },
