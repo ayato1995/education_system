@@ -8,17 +8,10 @@ var Play = enchant.Class.create(enchant.Sprite, {
     this.register_play(stage);
   },
 
-  display_main: function(stage, main) {
-    var prog = stage.prog;
-    // var space = prog.create_space(stage.map.x, 10, 42, 300, "gray")
-    main.display_stmts(stage, 200, 42);
-  },
-
   play: function(stage) {
     var prog = stage.prog;
     var fm = new Func_map();
     var main = main_parser(prog.main_head);
-    // this.display_main(stage, main);
     var head = prog.copy_blocks(stage, prog.main_head, 200, 42);
     fm.set_spead(func_parser(prog.s_head, "spead"));
     fm.set_heart(func_parser(prog.h_head, "heart"));
