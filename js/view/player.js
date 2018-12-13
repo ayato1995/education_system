@@ -2,7 +2,7 @@ var Player = enchant.Class.create(enchant.Sprite, {
   initialize: function(x, y, direction) {
     enchant.Sprite.call(this, 32, 32);
     this.image = game.assets[PLAYER];
-    this.direction = this.set_direction(direction);
+    this.frame = this.set_direction(direction);
     this.x = x;
     this.y = y;
   },
@@ -17,20 +17,21 @@ var Player = enchant.Class.create(enchant.Sprite, {
       d = 19;
     } else if (dire == "down") {
       d = 1;
-    } if (d == 0) {
+    }
+    if (d == 0) {
       console.log("player set_direction error : " + dire);
     }
     return d;
   },
 
   advance: function(state) {
-    if (this.direction == 1) {
+    if (this.frame == 1) {
       this.move_down(state);
-    } else if (this.direction == 10) {
+    } else if (this.frame == 10) {
       this.move_left(state);
-    } else if (this.direction == 19) {
+    } else if (this.frame == 19) {
       this.move_right(state);
-    } else if (this.direction == 28) {
+    } else if (this.frame == 28) {
       this.move_up(state);
     }
   },
@@ -78,26 +79,26 @@ var Player = enchant.Class.create(enchant.Sprite, {
   },
 
   rotate_right: function(state) {
-    if (this.direction == 1) {
-      this.direction = 10;
-    } else if (this.direction == 10) {
-      this.direction = 28;
-    } else if (this.direction == 19) {
-      this.direction = 1;
-    } else if (this.direction == 28) {
-      this.direction = 19;
+    if (this.frame == 1) {
+      this.frame = 10;
+    } else if (this.frame == 10) {
+      this.frame = 28;
+    } else if (this.frame == 19) {
+      this.frame = 1;
+    } else if (this.frame == 28) {
+      this.frame = 19;
     }
   },
 
   rotate_left: function(state) {
-    if (this.direction == 1) {
-      this.direction = 19;
-    } else if (this.direction == 10) {
-      this.direction = 1;
-    } else if (this.direction == 19) {
-      this.direction = 28;
-    } else if (this.direction == 28) {
-      this.direction = 10;
+    if (this.frame == 1) {
+      this.frame = 19;
+    } else if (this.frame == 10) {
+      this.frame = 1;
+    } else if (this.frame == 19) {
+      this.frame = 28;
+    } else if (this.frame == 28) {
+      this.frame = 10;
     }
   },
 });
