@@ -1,10 +1,10 @@
 var Play = enchant.Class.create(enchant.Sprite, {
   initialize: function(x, y, stage) {
     enchant.Sprite.call(this, 32, 32);
+    this.image = game.assets[PLAY];
     this.type = "play";
     this.x = x;
     this.y = y;
-    this.backgroundColor = "yellowgreen";
     this.register_play(stage);
   },
 

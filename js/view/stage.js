@@ -24,27 +24,27 @@ var Stage = enchant.Class.create(enchant.Scene, {
     var b = [];
     var map_x = this.map.x + this.map.width + 10;
     b.push(new Up());
-    b[0].set_block(null, map_x, 10, "red", this);
+    b[0].set_block(map_x, 10, "silver", this);
     b.push(new Rotate_right());
-    b[1].set_block(null, map_x, this.set_y(b[0]), "red", this);
+    b[1].set_block(map_x, this.set_y(b[0]), "silver", this);
     b.push(new Rotate_left());
-    b[2].set_block(null, map_x, this.set_y(b[1]), "red", this);
+    b[2].set_block(map_x, this.set_y(b[1]), "silver", this);
     b.push(new Loop());
-    b[3].set_block(null, null, map_x, this.set_y(b[2]), this);
+    b[3].set_block(map_x, this.set_y(b[2]), this);
     b.push(new Func_id("spead"));
-    b[4].set_block(null, map_x, this.set_y(b[3]), "green", this);
+    b[4].set_block(map_x, this.set_y(b[3]), "silver", this);
     b.push(new Func_id("heart"));
-    b[5].set_block(null, map_x, this.set_y(b[4]), "green", this);
+    b[5].set_block(map_x, this.set_y(b[4]), "silver", this);
     b.push(new Func_id("dia"));
-    b[6].set_block(null, map_x, this.set_y(b[5]), "green", this);
+    b[6].set_block(map_x, this.set_y(b[5]), "silver", this);
     b.push(new Func_id("clover"));
-    b[7].set_block(null, map_x, this.set_y(b[6]), "green", this);
+    b[7].set_block(map_x, this.set_y(b[6]), "silver", this);
     b.push(new Param(0));
-    b[8].set_block(null, map_x, this.set_y(b[7]), "aquamarine", this);
+    b[8].set_block(map_x, this.set_y(b[7]), "aquamarine", this);
     b.push(new Param(1));
-    b[9].set_block(null, map_x, this.set_y(b[8]), "gold", this);
+    b[9].set_block(map_x, this.set_y(b[8]), "gold", this);
     b.push(new Param(2));
-    b[10].set_block(null, map_x, this.set_y(b[9]), "pink", this);
+    b[10].set_block(map_x, this.set_y(b[9]), "pink", this);
     return b;
   },
 

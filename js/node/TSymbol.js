@@ -3,7 +3,6 @@ var Terminal_symbol = enchant.Class.create(enchant.Sprite, {
     enchant.Sprite.call(this, 32, 32);
     this.type = type;
     /* 画面出力用のデータ */
-    this.image;
     this.x;
     this.y;
     this.backgroundColor;
@@ -18,8 +17,7 @@ var Terminal_symbol = enchant.Class.create(enchant.Sprite, {
   },
 
   /* 画面出力用のデータのsetter */
-  set_block: function(img, x, y, color, stage) {
-    this.set_image(img);
+  set_block: function(x, y, color, stage) {
     this.set_x(x);
     this.set_y(y);
     this.set_backgroundColor(color);

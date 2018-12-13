@@ -1,6 +1,7 @@
 var Rotate_right = enchant.Class.create(Terminal_symbol, {
   initialize: function() {
     Terminal_symbol.call(this, "rotate_right");
+    this.image = game.assets[RIGHT];
   },
 
   create_block: function(stage, x, y) {

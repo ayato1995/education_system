@@ -2,6 +2,7 @@ var Loop_start = enchant.Class.create(Terminal_symbol, {
   initialize: function() {
     Terminal_symbol.call(this, "loop_start");
     this.height = 16;
+    this.image = game.assets[LSTART];
     this.n = 1;
     this.n_label = this.initialize_label(String(this.n));
   },
@@ -10,7 +11,7 @@ var Loop_start = enchant.Class.create(Terminal_symbol, {
     var label = new Label(string);
     label.width = 14;
     label.height = 10;
-    label.x = this.x + (this.width - label.width) / 2;
+    label.x = this.x + (this.width - label.width) / 2 - 2;
     label.y = this.y + (this.height - label.height);
     label.textAlign = "center";
     label.font = "10px 'MSゴシック'"
@@ -24,7 +25,7 @@ var Loop_start = enchant.Class.create(Terminal_symbol, {
     this.set_y(loop.start.y);
     this.set_n(loop.start.n);
     this.set_backgroundColor(loop.start.backgroundColor);
-    this.register_inc_n();
+    this.register_inc_n(stage);
     this.register_label_move();
   },
 
@@ -39,15 +40,14 @@ var Loop_start = enchant.Class.create(Terminal_symbol, {
     ls.loop.x = x;
     ls.loop.y = y;
     ls.register_loop_space();
-    ls.loop.backgroundColor = "orange";
+    ls.loop.backgroundColor = "gainsboro";
     stage.addChild(ls.loop);
     stage.addChild(ls);
     stage.addChild(ls.n_label);
     return ls;
   },
 
-  set_block: function(img, x, y, color, stage, loop, end) {
-    this.set_image(img);
+  set_block: function(x, y, color, stage, loop, end) {
     this.set_x(x);
     this.set_y(y);
     this.set_n(loop.start.n);
@@ -82,7 +82,7 @@ var Loop_start = enchant.Class.create(Terminal_symbol, {
   /* ラベルに関するイベントリスナ */
   register_label_move: function() {
     this.n_label.addEventListener("enterframe", function() {
-      this.n_label.x = this.x + (this.width - this.n_label.width) / 2;
+      this.n_label.x = this.x + (this.width - this.n_label.width) / 2 - 2;
       this.n_label.y = this.y + (this.height - this.n_label.height);
     }.bind(this));
   },

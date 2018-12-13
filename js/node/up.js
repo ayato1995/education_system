@@ -1,6 +1,7 @@
 var Up = enchant.Class.create(Terminal_symbol, {
   initialize: function() {
     Terminal_symbol.call(this, "advance");
+    this.image = game.assets[ADVANCE];
   },
 
   create_block: function(stage, x, y) {

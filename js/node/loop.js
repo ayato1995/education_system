@@ -6,7 +6,7 @@ var Loop = enchant.Class.create(enchant.Sprite, {
     this.start = new Loop_start();
     this.end = new Loop_end();
     this.height = this.start.height + this.end.height + 5;
-    this.backgroundColor = "orange";
+    this.backgroundColor = "gainsboro";
     this.register_height();
     // 移動前のブロックのx, y座標を保存
     this.keep_x;
@@ -28,11 +28,11 @@ var Loop = enchant.Class.create(enchant.Sprite, {
     return l;
   },
 
-  set_block: function(start_img, end_img, x, y, stage) {
+  set_block: function(x, y, stage) {
     this.x = x;
     this.y = y;
-    this.start.set_block(start_img, this.x, this.y, "blue", stage, this, this.end);
-    this.end.set_block(start_img, this.x, this.y + this.start.height + 5, "yellow", stage, this, this.start);
+    this.start.set_block(this.x, this.y, "silver", stage, this, this.end);
+    this.end.set_block(this.x, this.y + this.start.height + 5, "silver", stage, this, this.start);
   },
 
   get_start_prev: function() {

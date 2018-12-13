@@ -2,6 +2,7 @@ var Func_id = enchant.Class.create(Terminal_symbol, {
   initialize: function(name) {
     Terminal_symbol.call(this, "func_id");
     this.name = name;
+    this.image = this.set_image();
     // 定義されているargのtypeを保存
     this.arg_type = [];
     // 画面に表示するargを保存
@@ -33,6 +34,21 @@ var Func_id = enchant.Class.create(Terminal_symbol, {
     return fi;
   },
 
+  set_image: function() {
+    var img = null;
+    if (this.name == "spead")
+      img = game.assets[SPEAD];
+    else if (this.name == "heart")
+      img = game.assets[HEART];
+    else if (this.name == "dia")
+      img = game.assets[DIA];
+    else if (this.name == "clover")
+      img = game.assets[CLOVER];
+    if (img == null)
+      console.log("func_id set_image erorr : " + this.name);
+    return img;
+  },
+
   set_arg_type: function(arg_type) {
     this.arg_type = arg_type;
   },
@@ -59,9 +75,11 @@ var Func_id = enchant.Class.create(Terminal_symbol, {
     console.log("func_delete");
     var prev = this.prev;
     var next = this.next;
-    while (next.type == "arg_start" || next.type == "arg_end") {
-      next = next.next;
-      if (next == null) break;
+    if (next != null) {
+      while (next.type == "arg_start" || next.type == "arg_end") {
+        next = next.next;
+        if (next == null) break;
+      }
     }
     if (prev != null && next != null) {
       if (e.x > this.keep_x + this.width + 5 ||
