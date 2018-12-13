@@ -1,6 +1,6 @@
 var State = function(player) {
   this.player = player;
-  this.collision_frag = false;
+  this.collision_flag = false;
   this.stack_frame = [];
 }
 
