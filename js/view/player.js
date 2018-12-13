@@ -9,16 +9,17 @@ var Player = enchant.Class.create(enchant.Sprite, {
 
   set_direction: function(dire) {
     var d = 0;
-    if (dire == "up")
+    if (dire == "up") {
       d = 28;
-    else if (dire == "left")
+    } else if (dire == "left") {
       d = 10;
-    else if (dire == "right")
+    } else if (dire == "right"){
       d = 19;
-    else if (dire == "down")
+    } else if (dire == "down") {
       d = 1;
-    if (d == 0)
+    } if (d == 0) {
       console.log("player set_direction error : " + dire);
+    }
     return d;
   },
 
