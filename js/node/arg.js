@@ -22,7 +22,7 @@ var Arg = enchant.Class.create(enchant.Sprite, {
       color = "orange";
       b_color = "gold";
     } else if (this.id == 2) {
-      color = "lightpink";
+      color = "hotpink";
       b_color = "pink";
     }
 

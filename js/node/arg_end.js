@@ -21,7 +21,7 @@ var Arg_end = enchant.Class.create(Terminal_symbol, {
     } else if (id == 1) {
       color = "orange";
     } else if (id == 2) {
-      color = "lightpink";
+      color = "hotpink";
     }
     this.backgroundColor = color;
   },

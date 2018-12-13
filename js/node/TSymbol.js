@@ -53,6 +53,21 @@ var Terminal_symbol = enchant.Class.create(enchant.Sprite, {
     }
   },
 
+  copy_move: function(node) {
+    if (node.type == "head") {
+      node = node.next;
+    }
+    while (node != null) {
+      var prev = node.prev;
+      node.x = prev.x;
+      node.y = prev.y + prev.height + 5;
+      if (node.type == "arg_start") {
+        node.y -= 5;
+      }
+      node = node.next;
+    }
+  },
+
   /* 連結リスト */
   set_next: function(node) {
     this.next = node;

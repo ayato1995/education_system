@@ -108,6 +108,7 @@ var Prog = enchant.Class.create({
       }
       head = head.next;
     }
+    copy_h.copy_move(copy_h);
     return copy_h;
   },
 

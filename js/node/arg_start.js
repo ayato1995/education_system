@@ -31,7 +31,7 @@ var Arg_start = enchant.Class.create(Terminal_symbol, {
       color = "orange";
       b_color = "gold";
     } else if (this.id == 2) {
-      color = "lightpink";
+      color = "hotpink";
       b_color = "pink";
     }
 
