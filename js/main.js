@@ -11,7 +11,7 @@ window.onload = function() {
   game.preload(PLAYER, MAP, GOAL);
 
   game.onload = function() {
-    var stage = new Stage(0);
+    stage = new Stage(0);
     game.pushScene(stage);
     stage.display();
   }
