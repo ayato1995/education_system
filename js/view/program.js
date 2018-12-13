@@ -36,16 +36,18 @@ var Prog = enchant.Class.create({
     return space;
   },
 
-  move_blocks: function() {
-    this.move_block(this.main_head, this.main_space);
-    this.move_block(this.s_head, this.s_space);
-    this.move_block(this.h_head, this.h_space);
-    this.move_block(this.d_head, this.d_space);
-    this.move_block(this.c_head, this.c_space);
+  move_blocks: function(x) {
+    this.move_block(x, this.main_head, this.main_space);
+    this.move_block(this.main_space.x + this.main_space.width + 10, this.s_head, this.s_space);
+    this.move_block(this.s_space.x + this.s_space.width + 10, this.h_head, this.h_space);
+    this.move_block(this.h_space.x + this.h_space.width + 10, this.d_head, this.d_space);
+    this.move_block(this.d_space.x + this.d_space.width + 10, this.c_head, this.c_space);
   },
 
-  move_block: function(head, space) {
+  move_block: function(x, head, space) {
+    head.x = x;
     head.y = space.y + space.height + 10;
+    space.x = x - 5
     space.y = head.y + head.height;
     head.move(head);
   },

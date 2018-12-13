@@ -59,6 +59,11 @@ var Stage = enchant.Class.create(enchant.Scene, {
     this.display_player();
   },
 
+  remove: function() {
+    this.remove_blocks();
+    this.remove_play();
+  },
+
   display_blocks: function() {
     for (var i = 0; i < this.blocks.length; i++) {
       if (i == 3) {
