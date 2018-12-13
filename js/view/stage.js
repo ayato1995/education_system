@@ -2,7 +2,7 @@ var Stage = enchant.Class.create(enchant.Scene, {
   initialize: function(id) {
     enchant.Scene.call(this);
     this.map = this.set_map(id);
-    // this.player = new Player();
+    this.player = new Player(this.map.init_x, this.map.init_y, this.map.init_direction);
     this.blocks = this.set_blocks();
     this.play = new Play(this.blocks[this.blocks.length - 1].x, this.set_y(this.blocks[this.blocks.length - 1]), this);
     this.prog = new Prog(this.blocks[0].x + this.blocks[0].height + 20);
@@ -56,6 +56,7 @@ var Stage = enchant.Class.create(enchant.Scene, {
     this.display_blocks();
     this.display_play();
     this.display_map();
+    this.display_player();
   },
 
   display_blocks: function() {
@@ -100,5 +101,9 @@ var Stage = enchant.Class.create(enchant.Scene, {
 
   display_map: function() {
     this.addChild(this.map);
+  },
+
+  display_player: function() {
+    this.addChild(this.player);
   },
 });

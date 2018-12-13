@@ -8,8 +8,7 @@ const GOAL = "../img/goal.png";
 window.onload = function() {
   game = new Core(WIDTH, HIGHT);
   game.fps = 60;
-  //game.preload(PLAYER, MAP, GOAL);
-  game.preload("../img/map0.gif")
+  game.preload(PLAYER, MAP, GOAL);
 
   game.onload = function() {
     var stage = new Stage(0);
