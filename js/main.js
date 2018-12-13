@@ -1,17 +1,20 @@
 enchant();
-const WIDTH = 600;
-const HIGHT = 500;
+const WIDTH = 700;
+const HIGHT = 460;
+const PLAYER = "../img/chara5.png";
+const MAP = "../img/map0.gif";
+const GOAL = "../img/goal.png";
 
 window.onload = function() {
   game = new Core(WIDTH, HIGHT);
   game.fps = 60;
+  //game.preload(PLAYER, MAP, GOAL);
+  game.preload("../img/map0.gif")
 
   game.onload = function() {
-    var stage = new Stage();
+    var stage = new Stage(0);
     game.pushScene(stage);
-    stage.display_heads();
-    stage.display_blocks();
-    stage.display_play();
+    stage.display();
   }
 
   game.start();

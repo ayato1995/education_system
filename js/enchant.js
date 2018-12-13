@@ -5,8 +5,8 @@
  * Copyright UEI Corporation
  * Released under the MIT license.
  */
-const CORE_WIDTH = 600;
-const CORE_HEIGHT = 320;
+const CORE_WIDTH = 700;
+const CORE_HEIGHT = 460;
 (function(window, undefined) {
 
 // ECMA-262 5th edition Functions
