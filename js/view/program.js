@@ -30,6 +30,13 @@ var Prog = enchant.Class.create({
     return this.main_space.height;
   },
 
+  /* main_headに一つ以上ブロックがあるかを判定 */
+  is_append: function() {
+    if (this.main_head.next != null)
+      return true;
+    return false;
+  },
+
   create_space: function(head, width, height, color) {
     var space = new Sprite(width, height);
     space.type = "space";
