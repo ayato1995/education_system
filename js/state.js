@@ -16,4 +16,11 @@ var State = enchant.Class.create({
   frame_top: function() {
     return this.stack_frame[this.stack_frame.length - 1];
   },
+
+  get_index_frame: function(index) {
+    if (index >= this.stack_frame.length) {
+      return null;
+    }
+    return this.stack_frame[index];
+  },
 });

@@ -8,6 +8,8 @@ var eval = function(state, fm) {
   // console.log(current_frame.type);
   if (current_frame.ip >= current_frame.get_stmts_length()) {
     if (current_frame.type == "main_frame") {
+      // stage.play.highlight(state);
+      stage.play.main_head_highlight_off();
       if (is_clear(state)) {
         console.log("goal");
         return;
@@ -18,6 +20,7 @@ var eval = function(state, fm) {
     } else if (current_frame.type == "loop_frame") {
       current_frame.dec_loop_count();
       console.log(current_frame.get_loop_count());
+      stage.play.loop_end_highlight_off(state);
       if (current_frame.get_loop_count() == 0) {
         state.pop_frame();
         state.frame_top().inc_ip();
@@ -30,6 +33,7 @@ var eval = function(state, fm) {
       state.pop_frame();
     }
   } else {
+    stage.play.highlight(state);
     eval_block(current_frame, state, fm);
   }
   if (state.get_collition_flag) {

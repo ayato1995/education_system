@@ -68,11 +68,6 @@ function main_parser (prog) {
     return null;
   }
   return prog_stack.pop();
-  /*
-  var p = prog_stack.pop();
-  console.log(p);
-  return p;
-  */
 }
 
 function func_parser (prog, name) {
@@ -145,9 +140,4 @@ function func_parser (prog, name) {
     return null;
   }
   return prog_stack.pop();
-  /*
-  var p = prog_stack.pop();
-  console.log(p);
-  return p;
-  */
 }

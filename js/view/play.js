@@ -36,4 +36,78 @@ var Play = enchant.Class.create(enchant.Sprite, {
       this.play(stage);
     });
   },
+
+  main_head_highlight_off: function() {
+    var node = this.play_progs.pop();
+    while (node.next != null) {
+      node = node.next;
+      node.backgroundColor = "silver";
+    }
+  },
+
+  loop_end_highlight_off: function(state) {
+    var frame_i = state.stack_frame.length - 1;
+    var frame = state.get_index_frame(frame_i);
+    var total_ip = 0;
+    while (frame.type == "loop_frame") {
+      total_ip += frame.ip;
+      frame_i--;
+      frame = state.get_index_frame(frame_i);
+    }
+    total_ip += frame.ip;
+    var head = this.play_progs[this.play_progs.length - 1];
+    var i = 0;
+    while (i < total_ip) {
+      head = head.next;
+      i++;
+    }
+    if (total_ip != 0) {
+      head.backgroundColor = "silver";
+    }
+  },
+
+  highlight: function(state) {
+    var frame_i = state.stack_frame.length - 1;
+    var frame = state.get_index_frame(frame_i);
+    var total_ip = 0;
+    var loop_flag = false;
+    while (frame.type == "loop_frame") {
+      loop_flag = true;
+      total_ip += frame.ip;
+      frame_i--;
+      frame = state.get_index_frame(frame_i);
+    }
+    total_ip += frame.ip;
+    var head = this.play_progs[this.play_progs.length - 1];
+    var i = 0;
+    while (i < total_ip) {
+      head = head.next;
+      if (!loop_flag) {
+        if (head.type == "loop_start") {
+          head = this.get_loop_end_next(head);
+        }
+      }
+      i++;
+    }
+    if (total_ip != 0) {
+      head.backgroundColor = "silver";
+    }
+    head = head.next;
+    if (head != null) {
+      head.backgroundColor = "yellow";
+    }
+  },
+
+  get_loop_end_next: function(head) {
+    var loop_nest = 1;
+    while (loop_nest != 0) {
+      head = head.next;
+      if (head.type == "loop_start") {
+        loop_nest++;
+      } else if (head.type == "loop_end") {
+        loop_nest--;
+      }
+    }
+    return head;
+  },
 })
