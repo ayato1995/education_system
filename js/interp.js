@@ -67,7 +67,7 @@ var eval_block = function(frame, state, fm) {
     frame.inc_ip();
   } else if (name == "func_call") {
     console.log("func_call : " + stmt.id);
-    stage.prog.copy_func(stmt.id);
+    stage.prog.copy_func(stmt.id, stmt.get_args());
     var stmts = fm.get_func(stmt.id);
     exchang_param_arg(stmts.get_stmts(), stmt.get_args());
     state.push_frame(new Func_frame(stmt.id, stmts.get_stmts()));
