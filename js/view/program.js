@@ -77,7 +77,6 @@ var Prog = enchant.Class.create({
   },
 
   copy_func: function(func_name, args) {
-    console.log(args);
     var head = this.get_func_head(func_name);
     var play_block = stage.play.play_progs[stage.play.play_progs.length - 1];
     var x = play_block.x + play_block.width + 20;
@@ -118,6 +117,57 @@ var Prog = enchant.Class.create({
     return y;
   },
 
+  copy_param: function(head, c_node, args, x, y) {
+    var loop_nest = [];
+    var func = [];
+    var arg_start = [];
+    for (var i = 0; i < args.length; i++) {
+      if (args[i] == null) return;
+      if (args[i].id == head.id){
+        var arg = args[i];
+        break;
+      }
+    }
+    for (var i = 0; i < arg.stmts.length; i++) {
+      var node = arg.stmts[i];
+      if (node.type == "main_loop" || node.type == "func_loop") {
+        y = this.copy_stmts(node, c_node, x, y);
+      } else if (node.type == "func_call") {
+        c_node.append(new Func_id(node.id));
+        c_node = c_node.next;
+        c_node.x = x;
+        c_node.y = y;
+        c_node.backgroundColor = "silver";
+        stage.addChild(c_node);
+      } else {
+        c_node.append(arg.stmts[i].copy_block(stage, x, y));
+        y += c_node.height + 5;
+        c_node = c_node.next;
+        c_node.backgroundColor = "silver";
+        if (c_node.type == "loop_start") {
+          loop_nest.push(c_node);
+        } else if (c_node.type == "loop_end") {
+          var start = loop_nest.pop();
+          start.loop.height = y - start.loop.y;
+        } else if (c_node.type == "func_id") {
+          func.push(c_node.arg_type.length);
+        } else if (c_node.type == "arg_start") {
+          arg_start.push(c_node.arg);
+        } else if (c_node.type == "arg_end") {
+          var start_arg = arg_start.pop();
+          c_node.set_backgroundColor(start_arg.id);
+          start_arg.height = y - start_arg.y;
+          var length = func.pop();
+          length--;
+          if (length != 0) {
+            func.push(length);
+          }
+        }
+      }
+    }
+    return y;
+  },
+
   copy_blocks: function(stage, head, x, y, color, args) {
     var copy_h = new Terminal_symbol("head");
     copy_h.x = x;
@@ -142,51 +192,7 @@ var Prog = enchant.Class.create({
         y -= 5;
       }
       if (head.type == "param") {
-        console.log(head.id);
-        for (var i = 0; i < args.length; i++) {
-          if (args[i].id == head.id){
-            var arg = args[i];
-            break;
-          }
-        }
-        console.log(arg);
-        for (var i = 0; i < arg.stmts.length; i++) {
-          var node = arg.stmts[i];
-          if (node.type == "main_loop" || node.type == "func_loop") {
-            y = this.copy_stmts(node, c_node, x, y);
-          } else if (node.type == "func_call") {
-            c_node.append(new Func_id(node.id));
-            c_node = c_node.next;
-            c_node.x = x;
-            c_node.y = y;
-            c_node.backgroundColor = "silver";
-            stage.addChild(c_node);
-          } else {
-            c_node.append(arg.stmts[i].copy_block(stage, x, y));
-            y += copy_h.height + 5;
-            c_node = c_node.next;
-            c_node.backgroundColor = "silver";
-            if (c_node.type == "loop_start") {
-              loop_nest.push(c_node);
-            } else if (c_node.type == "loop_end") {
-              var start = loop_nest.pop();
-              start.loop.height = y - start.loop.y;
-            } else if (c_node.type == "func_id") {
-              func.push(c_node.arg_type.length);
-            } else if (c_node.type == "arg_start") {
-              arg.push(c_node.arg);
-            } else if (c_node.type == "arg_end") {
-              var start_arg = arg.pop();
-              c_node.set_backgroundColor(start_arg.id);
-              start_arg.height = y - start_arg.y;
-              var length = func.pop();
-              length--;
-              if (length != 0) {
-                func.push(length);
-              }
-            }
-          }
-        }
+        y = this.copy_param(head, c_node, args, x, y);
       } else {
         c_node.append(head.copy_block(stage, x, y));
         c_node = c_node.next;
