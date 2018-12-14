@@ -82,7 +82,7 @@ var Prog = enchant.Class.create({
     var x = play_block.x + play_block.width + 20;
     var y = play_block.y;
     var func_h = this.copy_blocks(stage, head, x, y, "skyblue");
-    stage.play.play_blocks.push(func_h);
+    stage.play.play_progs.push(func_h);
   },
 
   copy_blocks: function(stage, head, x, y, color) {
@@ -133,6 +133,19 @@ var Prog = enchant.Class.create({
     }
     copy_h.copy_move(copy_h);
     return copy_h;
+  },
+
+  remove_copy_blocks: function(head) {
+    var bc = head.space.backgroundColor;
+    if (bc == "skyblue") {
+      stage.removeChild(head);
+    }
+    stage.removeChild(head.space);
+    head = head.next;
+    while (head != null) {
+      stage.removeChild(head);
+      head = head.next;
+    }
   },
 
   is_x_main_head_inside: function(x) {

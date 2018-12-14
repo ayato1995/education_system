@@ -25,6 +25,8 @@ var eval = function(state, fm) {
         current_frame.reset_ip();
       }
     } else {
+      var head = stage.play.play_progs.pop();
+      stage.prog.remove_copy_blocks(head);
       state.pop_frame();
     }
   } else {
