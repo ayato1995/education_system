@@ -30,6 +30,20 @@ var Prog = enchant.Class.create({
     return this.main_space.height;
   },
 
+  get_func_head: function(name) {
+    var head = null;
+    if (name == "spead") {
+      head = this.s_head;
+    } else if (name == "heart") {
+      head = this.h_head;
+    } else if (name == "dia") {
+      head = this.d_head;
+    } else if (name == "clover") {
+      head = this.c_head;
+    }
+    return head;
+  },
+
   /* main_headに一つ以上ブロックがあるかを判定 */
   is_append: function() {
     if (this.main_head.next != null)
@@ -60,6 +74,15 @@ var Prog = enchant.Class.create({
     space.x = x - 5
     space.y = head.y + head.height;
     head.move(head);
+  },
+
+  copy_func: function(func_name) {
+    var head = this.get_func_head(func_name);
+    var play_block = stage.play.play_progs[stage.play.play_progs.length - 1];
+    var x = play_block.x + play_block.width + 20;
+    var y = play_block.y;
+    var func_h = this.copy_blocks(stage, head, x, y, "skyblue");
+    stage.play.play_blocks.push(func_h);
   },
 
   copy_blocks: function(stage, head, x, y, color) {

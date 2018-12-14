@@ -6,6 +6,8 @@ var Play = enchant.Class.create(enchant.Sprite, {
     this.x = x;
     this.y = y;
     this.register_play(stage);
+    // 実行中のブロックの管理
+    this.play_progs = [];
   },
 
   play: function(stage) {
@@ -13,6 +15,7 @@ var Play = enchant.Class.create(enchant.Sprite, {
     var fm = new Func_map();
     var main = main_parser(prog.main_head);
     var main_head = prog.copy_blocks(stage, prog.main_head, stage.map.x + stage.map.width + 20, 10, "gray");
+    this.play_progs.push(main_head);
     fm.set_spead(func_parser(prog.s_head, "spead"));
     fm.set_heart(func_parser(prog.h_head, "heart"));
     fm.set_dia(func_parser(prog.d_head, "dia"));
