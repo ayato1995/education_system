@@ -15,6 +15,15 @@ var Param = enchant.Class.create(Terminal_symbol, {
     return p;
   },
 
+  copy_block: function(stage, x, y) {
+    var p = new Param(this.id);
+    p.set_x(x);
+    p.set_y(y);
+    p.set_backgroundColor(this.backgroundColor);
+    stage.addChild(p);
+    return p;
+  },
+
   block_append: function(stage, e) {
     var prog = stage.prog;
     if (prog.is_x_s_head_inside(e.x)) {

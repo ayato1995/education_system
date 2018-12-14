@@ -41,7 +41,9 @@ var Play = enchant.Class.create(enchant.Sprite, {
     var node = this.play_progs.pop();
     while (node.next != null) {
       node = node.next;
-      node.backgroundColor = "silver";
+      if (node.type != "arg_start" && node.type != "arg_end") {
+        node.backgroundColor = "silver";
+      }
     }
   },
 
@@ -59,7 +61,9 @@ var Play = enchant.Class.create(enchant.Sprite, {
     var i = 0;
     while (i < total_ip) {
       head = head.next;
-      i++;
+      if (head.type != "arg_start" && head.type != "arg_end") {
+        i++;
+      }
     }
     if (total_ip != 0) {
       head.backgroundColor = "silver";
@@ -87,7 +91,9 @@ var Play = enchant.Class.create(enchant.Sprite, {
           head = this.get_loop_end_next(head);
         }
       }
-      i++;
+      if (head.type != "arg_start" && head.type != "arg_end") {
+        i++;
+      }
     }
     if (total_ip != 0) {
       head.backgroundColor = "silver";
