@@ -45,7 +45,6 @@ var eval_block = function(frame, state, fm) {
   if (name == "advance") {
     console.log("advance");
     go_forward_player(state);
-    is_collision(state);
     frame.inc_ip();
   } else if (name == "rotate_right") {
     console.log("rotate_right");
@@ -74,18 +73,17 @@ var eval_block = function(frame, state, fm) {
 
 var go_forward_player = function(state) {
   // console.log("go_forward_player");
-}
-
-var is_collision = function(state) {
-  // console.log("is_collision");
+  state.player.advance(state);
 }
 
 var rotate_player_right = function(state) {
   // console.log("rotate_player_right");
+  state.player.rotate_right(state);
 }
 
 var rotate_player_left = function(state) {
   // console.log("rotate_player_left")
+  state.player.rotate_left(state);
 }
 
 var exchang_param_arg = function(stmts, args) {
