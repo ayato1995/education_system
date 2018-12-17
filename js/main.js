@@ -23,7 +23,9 @@ window.onload = function() {
     SPEAD, HEART, DIA, CLOVER, PLAY);
 
   game.onload = function() {
-    stage = new Stage(0);
+    // 0 <= stage_id <= 6
+    var stage_id = 0;
+    stage = new Stage(stage_id);
     game.pushScene(stage);
     stage.display();
   }
