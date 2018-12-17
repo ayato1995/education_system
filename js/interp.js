@@ -115,5 +115,8 @@ var exchang_param_arg = function(stmts, args) {
 
 var is_clear = function(state) {
   // console.log("is_clear");
-  return true;
+  if (stage.player.within(stage.goal, 16)) {
+    return true;
+  }
+  return false;
 }

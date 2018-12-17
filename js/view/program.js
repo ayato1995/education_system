@@ -230,6 +230,10 @@ var Prog = enchant.Class.create({
     stage.removeChild(head.space);
     head = head.next;
     while (head != null) {
+      if (head.type == "loop_start") {
+        stage.removeChild(head.n_label);
+        stage.removeChild(head.loop);
+      }
       stage.removeChild(head);
       head = head.next;
     }
