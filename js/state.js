@@ -5,6 +5,10 @@ var State = enchant.Class.create({
     this.stack_frame = [];
   },
 
+  get_collision_flag: function() {
+    return this.collision_flag;
+  },
+
   push_frame: function(frame) {
     this.stack_frame.push(frame);
   },

@@ -36,7 +36,7 @@ var eval = function(state, fm) {
     stage.play.highlight(state);
     eval_block(current_frame, state, fm);
   }
-  if (state.get_collition_flag) {
+  if (state.get_collision_flag()) {
     console.log("retry");
     return;
   }
