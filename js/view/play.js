@@ -140,21 +140,69 @@ var Play = enchant.Class.create(enchant.Sprite, {
   */
   highlight: function(frame) {
     if (this.highlight_block.length != 0) {
-      var b = this.highlight_block.pop();
-      b.backgroundColor = "silver";
+      if (frame.type != "func_frame") {
+        var b = this.highlight_block.pop();
+        b.backgroundColor = "silver";
+      }
     }
     var name = frame.type;
     var index = this.play_progs.length - 1;
-    var block = this.play_progs[index];
-    console.log(this.play_progs);
-    var i = 0;
-    while (i <= frame.ip) {
-      console.log(block.type);
-      block = block.next;
-      i++;
+    if (stage.arg_play) {
+      console.log("ga");
+      index--;
     }
+    var block = this.play_progs[index];
+    var i = 0;
+    console.log(block);
+    var arg_flag = 0;
+    while (i <= frame.ip) {
+      // console.log(block.type);
+      block = block.next;
+
+      if (stage.arg_play && block.type == "func_id") {
+        block = block.next;
+      } else if (block.type == "arg_start") {
+        arg_flag++;
+        block = block.next;
+      } else if (block.type == "arg_end") {
+        arg_flag--;
+        block = block.next;
+      } else {
+        i++;
+      }
+
+      if (block.type == "func_id" && i <= frame.ip) {
+        while (true) {
+          block = block.next;
+          var type = block.type;
+          if (type == "arg_start") {
+            block = block.next;
+            type = block.type;
+            arg_flag++;
+          } else if (type == "arg_end") {
+            block = block.next;
+            type = block.type;
+            arg_flag--;
+          }
+          if (arg_flag == 0 && type != "func_id") {
+            break;
+          }
+        }
+        i++;
+      }
+    }
+    console.log(block.type);
     block.backgroundColor = "yellow";
     this.highlight_block.push(block);
+  },
+
+  end_func: function() {
+    var b = this.highlight_block.pop();
+    b.backgroundColor = "silver";
+    while (b.type != "func_id") {
+      b = this.highlight_block.pop();
+      b.backgroundColor = "silver";
+    }
   },
 
   get_loop_end_next: function(head) {

@@ -30,6 +30,8 @@ var eval = function(state, fm) {
     } else {
       var head = stage.play.play_progs.pop();
       stage.prog.remove_copy_blocks(head);
+      stage.play.end_func();
+      stage.arg_play = false;
       state.pop_frame();
     }
   } else {
@@ -66,10 +68,10 @@ var eval_block = function(frame, state, fm) {
     frame.inc_ip();
   } else if (name == "main_loop" || name == "func_loop") {
     console.log("loop");
-    stage.play.play_progs.push(stage.prog.find_loop_start(frame));
     state.push_frame(new Loop_frame(stmt.get_stmts(), stmt.get_loop_count()));
     // stage.play.play_progs.push(stage.prog.find_loop_start(state));
     frame = state.frame_top();
+    stage.play.play_progs.push(stage.prog.find_loop_start(frame));
     stage.play.highlight(frame);
     frame.inc_ip();
   } else if (name == "func_call") {

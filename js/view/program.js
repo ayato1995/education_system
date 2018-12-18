@@ -257,7 +257,9 @@ var Prog = enchant.Class.create({
     */
     var play = stage.play;
     var i = 0;
-    var b = play.play_progs[play.play_progs.length - 1];
+    var b = play.play_progs[play.play_progs.length - 2];
+    console.log(b);
+    console.log(frame.ip);
     while (i < frame.ip) {
       b = b.next;
       i++;
