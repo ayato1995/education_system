@@ -236,6 +236,36 @@ var Prog = enchant.Class.create({
     }
   },
 
+  find_loop_start: function(frame) {
+    /*
+    var frame = state.frame_top();
+    var index = state.stack_frame.length - 1;
+    console.log(frame.type);
+    while (frame.type == "loop_frame") {
+      index--;
+      frame = state.stack_frame[index];
+    }
+    console.log(frame.type);
+    var i = 0;
+    var b = play.play_progs[play.play_progs.length - 1];
+    while (i < frame.ip) {
+      b = b.next;
+      i++;
+    }
+    console.log(b.type);
+    return b;
+    */
+    var play = stage.play;
+    var i = 0;
+    var b = play.play_progs[play.play_progs.length - 1];
+    while (i < frame.ip) {
+      b = b.next;
+      i++;
+    }
+    console.log(b.type);
+    return b;
+  },
+
   is_x_main_head_inside: function(x) {
     return this.x_head_inside(this.main_head, x);
   },

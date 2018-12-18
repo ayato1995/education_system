@@ -8,6 +8,8 @@ var Play = enchant.Class.create(enchant.Sprite, {
     this.register_play(stage);
     // 実行中のブロックの管理
     this.play_progs = [];
+    // ハイライトのブロックを管理
+    this.highlight_block = [];
   },
 
   play: function(stage) {
@@ -81,7 +83,7 @@ var Play = enchant.Class.create(enchant.Sprite, {
       head.backgroundColor = "silver";
     }
   },
-
+  /*
   highlight: function(state) {
     var frame_i = state.stack_frame.length - 1;
     var frame = state.get_index_frame(frame_i);
@@ -107,6 +109,7 @@ var Play = enchant.Class.create(enchant.Sprite, {
       // console.log("gagag");
       play_index--;
     }
+    console.log(total_ip);
     // console.log(play_index + " " + (this.play_progs.length - 1));
     var head = this.play_progs[play_index];
     var i = 0;
@@ -122,14 +125,36 @@ var Play = enchant.Class.create(enchant.Sprite, {
         i++;
       }
     }
-    if (total_ip != 0) {
-      head.backgroundColor = "silver";
+    if (this.highlight_block.length != 0) {
+      var b = this.highlight_block.pop();
+      b.backgroundColor = "silver";
+      console.log(b.type);
     }
     head = head.next;
     if (head != null) {
       // console.log(head.type);
+      this.highlight_block.push(head);
       head.backgroundColor = "yellow";
     }
+  },
+  */
+  highlight: function(frame) {
+    if (this.highlight_block.length != 0) {
+      var b = this.highlight_block.pop();
+      b.backgroundColor = "silver";
+    }
+    var name = frame.type;
+    var index = this.play_progs.length - 1;
+    var block = this.play_progs[index];
+    console.log(this.play_progs);
+    var i = 0;
+    while (i <= frame.ip) {
+      console.log(block.type);
+      block = block.next;
+      i++;
+    }
+    block.backgroundColor = "yellow";
+    this.highlight_block.push(block);
   },
 
   get_loop_end_next: function(head) {

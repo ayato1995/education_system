@@ -20,7 +20,7 @@ var eval = function(state, fm) {
     } else if (current_frame.type == "loop_frame") {
       current_frame.dec_loop_count();
       console.log(current_frame.get_loop_count());
-      stage.play.loop_end_highlight_off(state);
+      // stage.play.loop_end_highlight_off(state);
       if (current_frame.get_loop_count() == 0) {
         state.pop_frame();
         state.frame_top().inc_ip();
@@ -33,8 +33,8 @@ var eval = function(state, fm) {
       state.pop_frame();
     }
   } else {
-    stage.play.highlight(state);
-    console.log(current_frame.stmts[0].type);
+    // stage.play.highlight(state);
+    // console.log(current_frame.stmts[0].type);
     eval_block(current_frame, state, fm);
   }
   if (state.get_collision_flag()) {
@@ -52,22 +52,29 @@ var eval_block = function(frame, state, fm) {
   if (name == "advance") {
     console.log("advance");
     go_forward_player(state);
+    stage.play.highlight(frame);
     frame.inc_ip();
   } else if (name == "rotate_right") {
     console.log("rotate_right");
     rotate_player_right(state);
+    stage.play.highlight(frame);
     frame.inc_ip();
   } else if (name == "rotate_left") {
     console.log("rotate_left");
     rotate_player_left(state);
+    stage.play.highlight(frame);
     frame.inc_ip();
   } else if (name == "main_loop" || name == "func_loop") {
     console.log("loop");
+    stage.play.play_progs.push(stage.prog.find_loop_start(frame));
     state.push_frame(new Loop_frame(stmt.get_stmts(), stmt.get_loop_count()));
+    // stage.play.play_progs.push(stage.prog.find_loop_start(state));
     frame = state.frame_top();
+    stage.play.highlight(frame);
     frame.inc_ip();
   } else if (name == "func_call") {
     console.log("func_call : " + stmt.id);
+    stage.play.highlight(frame);
     stage.prog.copy_func(stmt.id, stmt.get_args());
     var stmts = fm.get_func(stmt.id);
     state.push_frame(new Func_frame(stmt.id, stmts.get_stmts(), stmt.get_args()));
