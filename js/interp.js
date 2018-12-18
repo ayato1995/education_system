@@ -34,6 +34,7 @@ var eval = function(state, fm) {
     }
   } else {
     stage.play.highlight(state);
+    console.log(current_frame.stmts[0].type);
     eval_block(current_frame, state, fm);
   }
   if (state.get_collision_flag()) {
@@ -69,8 +70,7 @@ var eval_block = function(frame, state, fm) {
     console.log("func_call : " + stmt.id);
     stage.prog.copy_func(stmt.id, stmt.get_args());
     var stmts = fm.get_func(stmt.id);
-    exchang_param_arg(stmts.get_stmts(), stmt.get_args());
-    state.push_frame(new Func_frame(stmt.id, stmts.get_stmts()));
+    state.push_frame(new Func_frame(stmt.id, stmts.get_stmts(), stmt.get_args()));
     frame.inc_ip();
   } else {
     console.log("else : " + name);

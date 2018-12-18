@@ -11,6 +11,8 @@ var Stage = enchant.Class.create(enchant.Scene, {
     this.is_touch = true;
     // play_flag : プログラムを実行しているか管理
     this.play_flag = false;
+    // 引数ブロックであるかどうかを判定:
+    this.arg_play = false;
   },
 
   set_map: function(id) {

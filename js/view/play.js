@@ -55,13 +55,25 @@ var Play = enchant.Class.create(enchant.Sprite, {
       total_ip += frame.ip;
       frame_i--;
       frame = state.get_index_frame(frame_i);
+      if (stage.arg_play) {
+        while (frame.type != "func_frame") {
+          frame_i--;
+          frame = state.get_index_frame(frame_i);
+        }
+        frame_i--;
+        frame = state.get_index_frame(frame_i);
+      }
     }
     total_ip += frame.ip;
-    var head = this.play_progs[this.play_progs.length - 1];
+    var play_index = this.play_progs.length - 1;
+    if (stage.arg_play) {
+      play_index--;
+    }
+    var head = this.play_progs[play_index];
     var i = 0;
     while (i < total_ip) {
       head = head.next;
-      if (head.type != "arg_start" && head.type != "arg_end") {
+      if (head != null && head.type != "arg_start" && head.type != "arg_end") {
         i++;
       }
     }
@@ -80,14 +92,29 @@ var Play = enchant.Class.create(enchant.Sprite, {
       total_ip += frame.ip;
       frame_i--;
       frame = state.get_index_frame(frame_i);
+      if (stage.arg_play) {
+        while (frame.type != "func_frame") {
+          frame_i--;
+          frame = state.get_index_frame(frame_i);
+        }
+        frame_i--;
+        frame = state.get_index_frame(frame_i);
+      }
     }
     total_ip += frame.ip;
-    var head = this.play_progs[this.play_progs.length - 1];
+    var play_index = this.play_progs.length - 1;
+    if (stage.arg_play) {
+      // console.log("gagag");
+      play_index--;
+    }
+    // console.log(play_index + " " + (this.play_progs.length - 1));
+    var head = this.play_progs[play_index];
     var i = 0;
     while (i < total_ip) {
       head = head.next;
       if (!loop_flag) {
         if (head.type == "loop_start") {
+          // console.log("gaete");
           head = this.get_loop_end_next(head);
         }
       }
@@ -100,6 +127,7 @@ var Play = enchant.Class.create(enchant.Sprite, {
     }
     head = head.next;
     if (head != null) {
+      // console.log(head.type);
       head.backgroundColor = "yellow";
     }
   },
