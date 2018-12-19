@@ -29,7 +29,6 @@ var eval = function(state, fm) {
       var head = stage.play.play_progs.pop();
       stage.prog.remove_copy_blocks(head);
       stage.play.end_func();
-      // stage.arg_play = false;
       state.pop_frame();
     }
   } else {

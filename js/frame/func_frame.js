@@ -35,7 +35,6 @@ Func_frame.prototype.get_stmt = function() {
     var id = stage.arg_play.pop();
   }
   if (stmt.type == "param") {
-    // stage.arg_play = true;
     if (id != stmt.id) {
       id = stmt.id
     }
@@ -43,7 +42,5 @@ Func_frame.prototype.get_stmt = function() {
     var arg = this.args[stmt.id];
     return arg.stmts[this.args_ip];
   }
-  // stage.arg_play = false;
-  // stage.arg_play.pop();
   return this.stmts[this.ip];
 }
