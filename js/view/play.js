@@ -140,8 +140,16 @@ var Play = enchant.Class.create(enchant.Sprite, {
   */
   highlight: function(frame) {
     if (this.highlight_block.length != 0) {
+      /*
       if (frame.type != "func_frame") {
         var b = this.highlight_block.pop();
+        b.backgroundColor = "silver";
+      }
+      */
+      var b = this.highlight_block.pop();
+      if (b.type == "func_id") {
+        this.highlight_block.push(b);
+      } else {
         b.backgroundColor = "silver";
       }
     }
@@ -153,9 +161,12 @@ var Play = enchant.Class.create(enchant.Sprite, {
     }
     var block = this.play_progs[index];
     var i = 0;
-    console.log(block);
+    var ip = frame.ip;
+    if (frame.type == "func_frame") {
+      ip += frame.args_ip;
+    }
     var arg_flag = 0;
-    while (i <= frame.ip) {
+    while (i <= ip) {
       // console.log(block.type);
       block = block.next;
 
