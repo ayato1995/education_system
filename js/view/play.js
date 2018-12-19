@@ -133,13 +133,11 @@ var Play = enchant.Class.create(enchant.Sprite, {
           index--;
         }
       }
-      ip += frame.ip;
     } else {
       ip = frame.ip;
     }
     console.log(ip + " " + index);
     var block = this.play_progs[index];
-    console.log(block);
     var arg_flag = 0;
     while (i <= ip) {
       block = block.next;
@@ -165,7 +163,7 @@ var Play = enchant.Class.create(enchant.Sprite, {
         }
       }
     }
-    console.log(block.type);
+    console.log("hightlight : " + block.type);
     block.backgroundColor = "yellow";
     this.highlight_block.push(block);
   },
