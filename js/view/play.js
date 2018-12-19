@@ -114,7 +114,6 @@ var Play = enchant.Class.create(enchant.Sprite, {
       }
       ip += frame.args_ip;
     } else if (frame.type == "loop_frame") {
-      console.log("faga");
       for (var i = state.stack_frame.length - 1; i >= 0; i--) {
         var f = state.stack_frame[i];
         if (f.type == "main_frame") {
@@ -122,7 +121,7 @@ var Play = enchant.Class.create(enchant.Sprite, {
           index--;
           break;
         } else if (f.type == "func_frame") {
-          if (state.arg_play) {
+          if (stage.arg_play) {
             ip += f.args_ip;
           } else {
             index--;

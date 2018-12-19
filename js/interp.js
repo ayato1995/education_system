@@ -23,6 +23,7 @@ var eval = function(state, fm) {
       // stage.play.loop_end_highlight_off(state);
       if (current_frame.get_loop_count() == 0) {
         state.pop_frame();
+        stage.play.play_progs.pop();
         state.frame_top().inc_ip();
       } else {
         current_frame.reset_ip();
