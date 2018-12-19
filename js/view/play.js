@@ -83,69 +83,9 @@ var Play = enchant.Class.create(enchant.Sprite, {
       head.backgroundColor = "silver";
     }
   },
-  /*
-  highlight: function(state) {
-    var frame_i = state.stack_frame.length - 1;
-    var frame = state.get_index_frame(frame_i);
-    var total_ip = 0;
-    var loop_flag = false;
-    while (frame.type == "loop_frame") {
-      loop_flag = true;
-      total_ip += frame.ip;
-      frame_i--;
-      frame = state.get_index_frame(frame_i);
-      if (stage.arg_play) {
-        while (frame.type != "func_frame") {
-          frame_i--;
-          frame = state.get_index_frame(frame_i);
-        }
-        frame_i--;
-        frame = state.get_index_frame(frame_i);
-      }
-    }
-    total_ip += frame.ip;
-    var play_index = this.play_progs.length - 1;
-    if (stage.arg_play) {
-      // console.log("gagag");
-      play_index--;
-    }
-    console.log(total_ip);
-    // console.log(play_index + " " + (this.play_progs.length - 1));
-    var head = this.play_progs[play_index];
-    var i = 0;
-    while (i < total_ip) {
-      head = head.next;
-      if (!loop_flag) {
-        if (head.type == "loop_start") {
-          // console.log("gaete");
-          head = this.get_loop_end_next(head);
-        }
-      }
-      if (head.type != "arg_start" && head.type != "arg_end") {
-        i++;
-      }
-    }
+  
+  highlight: function(frame, state) {
     if (this.highlight_block.length != 0) {
-      var b = this.highlight_block.pop();
-      b.backgroundColor = "silver";
-      console.log(b.type);
-    }
-    head = head.next;
-    if (head != null) {
-      // console.log(head.type);
-      this.highlight_block.push(head);
-      head.backgroundColor = "yellow";
-    }
-  },
-  */
-  highlight: function(frame) {
-    if (this.highlight_block.length != 0) {
-      /*
-      if (frame.type != "func_frame") {
-        var b = this.highlight_block.pop();
-        b.backgroundColor = "silver";
-      }
-      */
       var b = this.highlight_block.pop();
       if (b.type == "func_id") {
         this.highlight_block.push(b);
@@ -161,45 +101,50 @@ var Play = enchant.Class.create(enchant.Sprite, {
     }
     var block = this.play_progs[index];
     var i = 0;
-    var ip = frame.ip;
-    if (frame.type == "func_frame") {
+    var ip = 0;
+    if (stage.arg_play && frame.type == "func_frame") {
+      for (var i = state.stack_frame.length - 1; i >= 0; i--) {
+        var f = state.stack_frame[i];
+        if (f.type == "main_frame") {
+          console.log("faga");
+          ip += f.ip;
+          break;
+        } else if (!stage.arg_play && f.type == "func_frame") {
+          ip += f.ip;
+          break;
+        } else if ("loop_frame") {
+          ip += f.ip;
+        }
+      }
       ip += frame.args_ip;
+    } else {
+      ip = frame.ip;
     }
+    console.log(ip);
     var arg_flag = 0;
     while (i <= ip) {
-      // console.log(block.type);
       block = block.next;
-
-      if (stage.arg_play && block.type == "func_id") {
-        block = block.next;
-      } else if (block.type == "arg_start") {
-        arg_flag++;
-        block = block.next;
-      } else if (block.type == "arg_end") {
-        arg_flag--;
-        block = block.next;
-      } else {
-        i++;
-      }
-
-      if (block.type == "func_id" && i <= frame.ip) {
-        while (true) {
+      i++;
+      if (stage.arg_play) {
+        if (block.type == "arg_start") {
           block = block.next;
-          var type = block.type;
-          if (type == "arg_start") {
+        } else if (block.type == "arg_end") {
+          block = block.next;
+        }
+        if (block == null) {
+          cnsole.log("error : ブロックが存在しない " + this.play_progs[index]);
+        }
+      } else {
+        console.log(block);
+        if (block.type == "func_id" && i == ip) {
+          arg_flag = block.arg_type.length;
+          while (arg_flag != 0) {
             block = block.next;
-            type = block.type;
-            arg_flag++;
-          } else if (type == "arg_end") {
-            block = block.next;
-            type = block.type;
-            arg_flag--;
-          }
-          if (arg_flag == 0 && type != "func_id") {
-            break;
+            if (block.type == "arg_end") {
+              arg_flag--;
+            }
           }
         }
-        i++;
       }
     }
     console.log(block.type);

@@ -54,17 +54,17 @@ var eval_block = function(frame, state, fm) {
   if (name == "advance") {
     console.log("advance");
     go_forward_player(state);
-    stage.play.highlight(frame);
+    stage.play.highlight(frame, state);
     frame.inc_ip();
   } else if (name == "rotate_right") {
     console.log("rotate_right");
     rotate_player_right(state);
-    stage.play.highlight(frame);
+    stage.play.highlight(frame, state);
     frame.inc_ip();
   } else if (name == "rotate_left") {
     console.log("rotate_left");
     rotate_player_left(state);
-    stage.play.highlight(frame);
+    stage.play.highlight(frame, state);
     frame.inc_ip();
   } else if (name == "main_loop" || name == "func_loop") {
     console.log("loop");
@@ -72,11 +72,11 @@ var eval_block = function(frame, state, fm) {
     // stage.play.play_progs.push(stage.prog.find_loop_start(state));
     frame = state.frame_top();
     stage.play.play_progs.push(stage.prog.find_loop_start(frame));
-    stage.play.highlight(frame);
+    stage.play.highlight(frame, state);
     frame.inc_ip();
   } else if (name == "func_call") {
     console.log("func_call : " + stmt.id);
-    stage.play.highlight(frame);
+    stage.play.highlight(frame, state);
     stage.prog.copy_func(stmt.id, stmt.get_args());
     var stmts = fm.get_func(stmt.id);
     state.push_frame(new Func_frame(stmt.id, stmts.get_stmts(), stmt.get_args()));
