@@ -83,7 +83,7 @@ var Play = enchant.Class.create(enchant.Sprite, {
       head.backgroundColor = "silver";
     }
   },
-  
+
   highlight: function(frame, state) {
     if (this.highlight_block.length != 0) {
       var b = this.highlight_block.pop();
@@ -95,21 +95,17 @@ var Play = enchant.Class.create(enchant.Sprite, {
     }
     var name = frame.type;
     var index = this.play_progs.length - 1;
-    if (stage.arg_play) {
-      console.log("ga");
-      index--;
-    }
-    var block = this.play_progs[index];
     var i = 0;
     var ip = 0;
     if (stage.arg_play && frame.type == "func_frame") {
       for (var i = state.stack_frame.length - 1; i >= 0; i--) {
         var f = state.stack_frame[i];
         if (f.type == "main_frame") {
-          console.log("faga");
+          index--;
           ip += f.ip;
           break;
         } else if (!stage.arg_play && f.type == "func_frame") {
+          index--;
           ip += f.ip;
           break;
         } else if ("loop_frame") {
@@ -117,10 +113,34 @@ var Play = enchant.Class.create(enchant.Sprite, {
         }
       }
       ip += frame.args_ip;
+    } else if (frame.type == "loop_frame") {
+      console.log("faga");
+      for (var i = state.stack_frame.length - 1; i >= 0; i--) {
+        var f = state.stack_frame[i];
+        if (f.type == "main_frame") {
+          ip += f.ip;
+          index--;
+          break;
+        } else if (f.type == "func_frame") {
+          if (state.arg_play) {
+            ip += f.args_ip;
+          } else {
+            index--;
+            ip += f.ip;
+            break;
+          }
+        } else if (f.type == "loop_frame") {
+          ip += f.ip;
+          index--;
+        }
+      }
+      ip += frame.ip;
     } else {
       ip = frame.ip;
     }
-    console.log(ip);
+    console.log(ip + " " + index);
+    var block = this.play_progs[index];
+    console.log(block);
     var arg_flag = 0;
     while (i <= ip) {
       block = block.next;
@@ -135,7 +155,6 @@ var Play = enchant.Class.create(enchant.Sprite, {
           cnsole.log("error : ブロックが存在しない " + this.play_progs[index]);
         }
       } else {
-        console.log(block);
         if (block.type == "func_id" && i == ip) {
           arg_flag = block.arg_type.length;
           while (arg_flag != 0) {
