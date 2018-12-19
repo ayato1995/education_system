@@ -238,14 +238,18 @@ var Prog = enchant.Class.create({
   find_loop_start: function(frame) {
     var play = stage.play;
     var i = 0;
-    var b = play.play_progs[play.play_progs.length - 2];
-    console.log(b);
-    console.log(frame.ip);
+    var index = play.play_progs.length - 1;
+    if (stage.arg_play) {
+      index--;
+    }
+    var b = play.play_progs[index];
     while (i < frame.ip) {
       b = b.next;
       i++;
     }
-    console.log(b.type);
+    while (b.type != "loop_start") {
+      b = b.next;
+    }
     return b;
   },
 

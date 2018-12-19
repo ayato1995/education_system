@@ -108,35 +108,16 @@ var Play = enchant.Class.create(enchant.Sprite, {
           index--;
           ip += f.ip;
           break;
-        } else if ("loop_frame") {
+        } else if (f.type == "loop_frame") {
           ip += f.ip;
         }
       }
       ip += frame.args_ip;
     } else if (frame.type == "loop_frame") {
-      for (var i = state.stack_frame.length - 1; i >= 0; i--) {
-        var f = state.stack_frame[i];
-        if (f.type == "main_frame") {
-          ip += f.ip;
-          index--;
-          break;
-        } else if (f.type == "func_frame") {
-          if (stage.arg_play) {
-            ip += f.args_ip;
-          } else {
-            index--;
-            ip += f.ip;
-            break;
-          }
-        } else if (f.type == "loop_frame") {
-          ip += f.ip;
-          index--;
-        }
-      }
+      ip = frame.ip - 1;
     } else {
       ip = frame.ip;
     }
-    console.log(ip + " " + index);
     var block = this.play_progs[index];
     var arg_flag = 0;
     while (i <= ip) {
@@ -149,7 +130,8 @@ var Play = enchant.Class.create(enchant.Sprite, {
           block = block.next;
         }
         if (block == null) {
-          cnsole.log("error : ブロックが存在しない " + this.play_progs[index]);
+          console.log("error : ブロックが存在しない " + this.play_progs[index]);
+          return;
         }
       } else {
         if (block.type == "func_id" && i == ip) {
