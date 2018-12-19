@@ -57,7 +57,7 @@ var Play = enchant.Class.create(enchant.Sprite, {
       total_ip += frame.ip;
       frame_i--;
       frame = state.get_index_frame(frame_i);
-      if (stage.arg_play) {
+      if (stage.arg_play.length != 0) {
         while (frame.type != "func_frame") {
           frame_i--;
           frame = state.get_index_frame(frame_i);
@@ -68,7 +68,7 @@ var Play = enchant.Class.create(enchant.Sprite, {
     }
     total_ip += frame.ip;
     var play_index = this.play_progs.length - 1;
-    if (stage.arg_play) {
+    if (stage.arg_play.length != 0) {
       play_index--;
     }
     var head = this.play_progs[play_index];
@@ -97,14 +97,14 @@ var Play = enchant.Class.create(enchant.Sprite, {
     var index = this.play_progs.length - 1;
     var i = 0;
     var ip = 0;
-    if (stage.arg_play && frame.type == "func_frame") {
+    if (stage.arg_play.length != 0 && frame.type == "func_frame") {
       for (var i = state.stack_frame.length - 1; i >= 0; i--) {
         var f = state.stack_frame[i];
         if (f.type == "main_frame") {
           index--;
           ip += f.ip;
           break;
-        } else if (!stage.arg_play && f.type == "func_frame") {
+        } else if (stage.arg_play.length == 0 && f.type == "func_frame") {
           index--;
           ip += f.ip;
           break;
@@ -123,16 +123,27 @@ var Play = enchant.Class.create(enchant.Sprite, {
     while (i <= ip) {
       block = block.next;
       i++;
-      if (stage.arg_play) {
+      if (stage.arg_play.length != 0) {
+        var arg_id = stage.arg_play.pop();
         if (block.type == "arg_start") {
-          block = block.next;
+          if (block.id != arg_id) {
+            block = block.next;
+            while (block.type != "arg_end") {
+              block = block.next;
+            }
+            i--;
+          } else {
+            block = block.next;
+          }
         } else if (block.type == "arg_end") {
           block = block.next;
         }
         if (block == null) {
           console.log("error : ブロックが存在しない " + this.play_progs[index]);
+          stage.arg_play.push(arg_id);
           return;
         }
+        stage.arg_play.push(arg_id);
       } else {
         if (block.type == "func_id" && i == ip) {
           arg_flag = block.arg_type.length;

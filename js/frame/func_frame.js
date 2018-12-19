@@ -31,11 +31,19 @@ Func_frame.prototype.inc_ip = function() {
 
 Func_frame.prototype.get_stmt = function() {
   var stmt = this.stmts[this.ip];
+  if (stage.arg_play.length != 0) {
+    var id = stage.arg_play.pop();
+  }
   if (stmt.type == "param") {
-    stage.arg_play = true;
+    // stage.arg_play = true;
+    if (id != stmt.id) {
+      id = stmt.id
+    }
+    stage.arg_play.push(id);
     var arg = this.args[stmt.id];
     return arg.stmts[this.args_ip];
   }
-  stage.arg_play = false;
+  // stage.arg_play = false;
+  // stage.arg_play.pop();
   return this.stmts[this.ip];
 }

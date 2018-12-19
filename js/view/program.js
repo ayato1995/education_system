@@ -239,7 +239,7 @@ var Prog = enchant.Class.create({
     var play = stage.play;
     var i = 0;
     var index = play.play_progs.length - 1;
-    if (stage.arg_play) {
+    if (stage.arg_play.length != 0) {
       index--;
     }
     var b = play.play_progs[index];

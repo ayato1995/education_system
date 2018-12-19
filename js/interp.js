@@ -10,10 +10,10 @@ var eval = function(state, fm) {
     if (current_frame.type == "main_frame") {
       stage.play.main_head_highlight_off();
       if (is_clear(state)) {
-        console.log("goal");
+        console.log("result : goal");
         return;
       } else {
-        console.log("retry");
+        console.log("result : retry");
         return;
       }
     } else if (current_frame.type == "loop_frame") {
@@ -29,25 +29,21 @@ var eval = function(state, fm) {
       var head = stage.play.play_progs.pop();
       stage.prog.remove_copy_blocks(head);
       stage.play.end_func();
-      stage.arg_play = false;
+      // stage.arg_play = false;
       state.pop_frame();
     }
   } else {
-    // stage.play.highlight(state);
-    // console.log(current_frame.stmts[0].type);
     eval_block(current_frame, state, fm);
   }
   if (state.get_collision_flag()) {
-    console.log("retry");
+    console.log("result : retry");
     return;
   }
   setTimeout(eval.bind(this), 500, state, fm);
 }
 
 var eval_block = function(frame, state, fm) {
-  // console.log(frame);
   var stmt = frame.get_stmt();
-  // console.log(stmt);
   var name = stmt.type;
   if (name == "advance") {
     console.log("advance");
@@ -67,7 +63,6 @@ var eval_block = function(frame, state, fm) {
   } else if (name == "main_loop" || name == "func_loop") {
     console.log("loop");
     state.push_frame(new Loop_frame(stmt.get_stmts(), stmt.get_loop_count()));
-    // stage.play.play_progs.push(stage.prog.find_loop_start(state));
     frame = state.frame_top();
     stage.play.play_progs.push(stage.prog.find_loop_start(frame));
     stage.play.highlight(frame, state);
@@ -87,22 +82,18 @@ var eval_block = function(frame, state, fm) {
 }
 
 var go_forward_player = function(state) {
-  // console.log("go_forward_player");
   state.player.advance(state);
 }
 
 var rotate_player_right = function(state) {
-  // console.log("rotate_player_right");
   state.player.rotate_right(state);
 }
 
 var rotate_player_left = function(state) {
-  // console.log("rotate_player_left")
   state.player.rotate_left(state);
 }
 
 var exchang_param_arg = function(stmts, args) {
-  // console.log("exchang_param_arg");
   for (var i = 0; i < stmts.length; i++) {
     if (stmts[i].type == "param") {
       var arg = args[stmts[i].id];
@@ -122,7 +113,6 @@ var exchang_param_arg = function(stmts, args) {
 }
 
 var is_clear = function(state) {
-  // console.log("is_clear");
   if (stage.player.within(stage.goal, 16)) {
     return true;
   }
