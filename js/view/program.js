@@ -80,7 +80,7 @@ var Prog = enchant.Class.create({
     var head = this.get_func_head(func_name);
     var play_block = stage.play.play_progs[stage.play.play_progs.length - 1];
     var x = play_block.x + play_block.width + 20;
-    var y = play_block.y;
+    var y = 10;
     var func_h = this.copy_blocks(stage, head, x, y, "skyblue", args);
     stage.play.play_progs.push(func_h);
   },
