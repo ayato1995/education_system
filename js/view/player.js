@@ -38,8 +38,8 @@ var Player = enchant.Class.create(enchant.Sprite, {
 
   move_down: function(state) {
     var y = this.y;
-    while (y - this.y < 16) {
-      this.y -= 4;
+    while (this.y - y < 16) {
+      this.y += 4;
     }
     this.decision_map(state, this.x + 16, this.y + 16);
   },
