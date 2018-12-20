@@ -28,6 +28,18 @@ var Stage = enchant.Class.create(enchant.Scene, {
       return add_map_6();
     } else if (id == 6) {
       return add_map_7();
+    } else if (id == 7) {
+      return add_map_8();
+    } else if (id == 8) {
+      return add_map_9();
+    } else if (id == 9) {
+      return add_map_10();
+    } else if (id == 10) {
+      return add_map_11();
+    } else if (id == 11) {
+      return add_map_12();
+    } else if (id == 12) {
+      return add_map_13();
     }
     return null;
   },
