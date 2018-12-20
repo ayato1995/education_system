@@ -23,8 +23,8 @@ window.onload = function() {
     SPEAD, HEART, DIA, CLOVER, PLAY);
 
   game.onload = function() {
-    // 0 <= stage_id <= 6
-    var stage_id = 0;
+    // 0 <= stage_id <= 12
+    var stage_id = 3;
     stage = new Stage(stage_id);
     game.pushScene(stage);
     stage.display();
