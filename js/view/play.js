@@ -97,28 +97,39 @@ var Play = enchant.Class.create(enchant.Sprite, {
     var index = this.play_progs.length - 1;
     var i = 0;
     var ip = 0;
-    if (stage.arg_play.length != 0 && frame.type == "func_frame") {
+    if (stage.arg_play.length != 0 && frame.type != "main_frame") {
       for (var i = state.stack_frame.length - 1; i >= 0; i--) {
         var f = state.stack_frame[i];
         if (f.type == "main_frame") {
           index--;
           ip += f.ip;
+    console.log(ip);
           break;
-        } else if (stage.arg_play.length == 0 && f.type == "func_frame") {
+        } else if (f.type == "func_frame") {
           index--;
-          ip += f.ip;
-          break;
+          if (f.args.length != 0) {
+            ip += f.args_ip;
+    console.log(ip);
+          } else {
+            ip += f.ip;
+    console.log(ip);
+            break;
+          }
         } else if (f.type == "loop_frame") {
           ip += f.ip;
+    console.log(ip);
         }
       }
-      ip += frame.args_ip;
+    console.log(ip);
+      //ip += frame.args_ip;
     } else if (frame.type == "loop_frame") {
       ip = frame.ip - 1;
     } else {
       ip = frame.ip;
     }
+    console.log(ip);
     var block = this.play_progs[index];
+    console.log(block);
     var arg_flag = 0;
     while (i <= ip) {
       block = block.next;
